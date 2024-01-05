@@ -33,5 +33,10 @@ public class Main {
         System.out.println("---");
         System.out.println(tm.listAllSubTasks());
         System.out.println("---");
+        System.out.println(tm.getTaskById(2));
+        System.out.println("---");
+        task1 = new Task(task1.getTaskId(), "Task 1","Test task 1-1", TaskStatus.IN_PROGRESS);
+        tm.updateTask(task1);
+        System.out.println(tm.getTaskById(1));
     }
 }

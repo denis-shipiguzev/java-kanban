@@ -7,6 +7,12 @@ public class Subtask extends Task{
         this.type = TaskType.SUBTUSK;
         this.parentTaskId = parentTaskId;
     }
+    public Subtask(int taskId, String name, String description, int parentTaskId, TaskStatus status) {
+        super(taskId, name, description);
+        this.status = status;
+        this.type = TaskType.SUBTUSK;
+        this.parentTaskId = parentTaskId;
+    }
     public int getParentTaskId() {
         return parentTaskId;
     }

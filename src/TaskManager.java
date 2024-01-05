@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
@@ -40,6 +39,16 @@ public class TaskManager {
         subtasks.clear();
     }
 
+    // 2.c  Получение по идентификатору.
+    public Task getTaskById(int id){
+        return tasks.get(id);
+    }
+    public Epic getEpicById(int id){
+        return epics.get(id);
+    }
+    public Subtask getSubTaskById(int id){
+        return subtasks.get(id);
+    }
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
     public void addTask(Task task) {
         tasks.put(generateTaskId(), task);
@@ -49,17 +58,20 @@ public class TaskManager {
     }
     public void addSubTask(Subtask subtask){
         int parentId = subtask.getParentTaskId();
-        boolean parentTaskIds = epics.containsKey(parentId);
-
-        if (parentTaskIds) {
+        boolean parentTaskId = epics.containsKey(parentId);
+        if (parentTaskId) {
             subtasks.put(generateTaskId(), subtask);
         }
     }
-
-
-
+    // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     public void updateTask(Task task){
         tasks.put(task.getTaskId(), task);
+    }
+    public void updateEpic(Epic epic){
+        tasks.put(epic.getTaskId(), epic);
+    }
+    public void updateSubTask(Subtask subtask){
+        tasks.put(subtask.getTaskId(), subtask);
     }
 
 }
