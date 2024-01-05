@@ -22,6 +22,7 @@ public class Task {
         this.type = TaskType.TASK;
     }
 
+
     public String getDescription() {
         return description;
     }

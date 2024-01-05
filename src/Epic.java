@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 public class Epic extends Task{
     ArrayList<Integer> childId;
     public Epic(int taskId, String name, String description) {
@@ -13,6 +12,17 @@ public class Epic extends Task{
         this.status = status;
         this.type = TaskType.EPIC;
         this.childId = new ArrayList<Integer>();
+    }
+
+    public ArrayList<Integer> getSubTaskIds() {
+        return new ArrayList<>(childId);
+    }
+
+    public void addSubtaskId(int id) {
+        childId.add(id);
+    }
+    public void removeSubtaskId(int id) {
+        childId.remove(id);
     }
 
     @Override
