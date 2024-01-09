@@ -2,7 +2,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Поехали!");
         /*
 1. Создайте две задачи, а также эпик с двумя подзадачами и эпик с одной подзадачей.
 */
