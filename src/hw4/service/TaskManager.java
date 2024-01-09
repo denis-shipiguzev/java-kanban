@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TaskManager {
 
-    public static int taskId = 1;
+    public int taskId = 1;
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
     HashMap<Integer, Task> tasks = new HashMap<>();
     HashMap<Integer, Epic> epics = new HashMap<>();
@@ -67,8 +67,8 @@ public class TaskManager {
     }
     public void addSubTask(Subtask subtask){
         int parentId = subtask.getParentTaskId();
-        boolean parentTaskId = epics.containsKey(parentId);
-        if (parentTaskId) {
+        boolean hasParentTaskId = epics.containsKey(parentId);
+        if (hasParentTaskId) {
             epics.get(parentId).addSubtaskId(getTaskId());
             subtasks.put(generateTaskId(), subtask);
         }
@@ -79,8 +79,8 @@ public class TaskManager {
     }
     public void updateSubTask(Subtask subtask){
         int parentId = subtask.getParentTaskId();
-        boolean parentTaskId = epics.containsKey(parentId);
-        if (parentTaskId) {
+        boolean hasParentTaskId = epics.containsKey(parentId);
+        if (hasParentTaskId) {
             subtasks.put(subtask.getTaskId(), subtask);
             epics.get(parentId).setStatus(subtask.getStatus());
             int countSubTask = epics.get(parentId).childId.size();
@@ -102,8 +102,8 @@ public class TaskManager {
     }
     public Subtask removeSubTaskById(int taskId){
         int parentId = subtasks.get(taskId).getParentTaskId();
-        boolean parentTaskId = epics.containsKey(parentId);
-        if (parentTaskId) {
+        boolean hasParentTaskId = epics.containsKey(parentId);
+        if (hasParentTaskId) {
             epics.get(parentId).removeSubtaskId(taskId);
         }
         return subtasks.remove(taskId);
@@ -115,6 +115,7 @@ public class TaskManager {
         }
         return epics.remove(taskId);
     }
+    // 3.a  Получение списка всех подзадач определённого эпика.
 }
 
 

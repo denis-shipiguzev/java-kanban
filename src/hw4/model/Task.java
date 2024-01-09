@@ -2,11 +2,11 @@ package hw4.model;
 
 import java.util.Objects;
 public class Task {
-    int taskId;
-    String name;
-    String description;
-    TaskStatus status;
-    TaskType type;
+    protected int taskId;
+    protected String name;
+    protected String description;
+    protected TaskStatus status;
+    protected TaskType type;
 
     public Task (int taskId, String name, String description) {
         this.taskId = taskId;
@@ -55,13 +55,12 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "hw4.model.Task{" +
+        return "Task{" +
                 "ID=" + taskId +
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +
                 ", Description='" + description + '\'' +
                 ", status='" + status + '\'' + '}';
-        return result;
     }
 
     @Override

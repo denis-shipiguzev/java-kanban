@@ -20,13 +20,12 @@ public class Subtask extends Task {
     }
     @Override
     public String toString() {
-        String result = "hw4.model.Task{" +
+        return "Task{" +
                 "ID=" + taskId +
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +
                 ", Description='" + description + '\'' +
                 ", status='" + status + '\'' +
                 ", EpicId=" + parentTaskId + '}';
-        return result;
     }
 }

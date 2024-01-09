@@ -9,13 +9,14 @@ public class Epic extends Task {
         this.type = TaskType.EPIC;
         this.childId = new ArrayList<Integer>();
     }
+/*
     public Epic(int taskId, String name, String description, TaskStatus status) {
         super(taskId, name, description);
         this.status = status;
         this.type = TaskType.EPIC;
         this.childId = new ArrayList<Integer>();
     }
-
+*/
     public ArrayList<Integer> getSubTaskIds() {
         return new ArrayList<>(childId);
     }
@@ -29,7 +30,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        String result = "hw4.model.Task{" +
+        String result = "Task{" +
                 "ID=" + taskId +
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +
