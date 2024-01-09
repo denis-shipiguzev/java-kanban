@@ -29,11 +29,11 @@ public class Main {
         2. Распечатайте списки эпиков, задач и подзадач через System.out.println(..).
          */
         System.out.println("---");
-        System.out.println(tm.listAllTask());
+        System.out.println(tm.getAllTask());
         System.out.println("---");
-        System.out.println(tm.listAllEpics());
+        System.out.println(tm.getAllEpics());
         System.out.println("---");
-        System.out.println(tm.listAllSubTasks());
+        System.out.println(tm.getAllSubTasks());
         System.out.println("---");
         System.out.println(tm.getTaskByTaskId(2));
         /*
@@ -61,9 +61,10 @@ public class Main {
         */
         System.out.println("---");
         System.out.println(tm.removeTaskById(2));
-        System.out.println(tm.listAllTask());
+        System.out.println(tm.getAllTask());
         System.out.println("---");
+        System.out.println(tm.getSubTasksOfEpics(3));
         System.out.println(tm.removeEpicById(3));
-        System.out.println(tm.listAllEpics());
+        System.out.println(tm.getAllEpics());
     }
 }

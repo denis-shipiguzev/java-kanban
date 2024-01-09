@@ -12,9 +12,9 @@ public class TaskManager {
 
     public int taskId = 1;
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    protected HashMap<Integer, Task> tasks = new HashMap<>();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     private int generateTaskId(){
         return taskId++;
@@ -25,16 +25,16 @@ public class TaskManager {
     }
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
-    public HashMap<Integer, Task> listAllTask(){
-        return new HashMap<>(tasks);
+    public ArrayList<Task> getAllTask() {
+        return new ArrayList<>(tasks.values());
     }
 
-    public HashMap<Integer, Task> listAllEpics(){
-        return new HashMap<>(epics);
+    public ArrayList<Epic> getAllEpics(){
+        return new ArrayList<>(epics.values());
     }
 
-    public HashMap<Integer, Task> listAllSubTasks(){
-        return new HashMap<>(subtasks);
+    public ArrayList<Subtask> getAllSubTasks(){
+        return new ArrayList<>(subtasks.values());
     }
     // 2.b  Удаление всех задач.
     public void removeAllTasks() {
@@ -116,6 +116,14 @@ public class TaskManager {
         return epics.remove(taskId);
     }
     // 3.a  Получение списка всех подзадач определённого эпика.
+    public ArrayList<Subtask> getSubTasksOfEpics(int taskId) {
+        ArrayList<Subtask> list = new ArrayList<>();
+        Epic epic = epics.get(taskId);
+        for (Integer taskid: epic.getSubTaskIds()) {
+            list.add(subtasks.get(taskid));
+        }
+        return list;
+    }
 }
 
 
