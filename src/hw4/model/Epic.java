@@ -1,6 +1,8 @@
+package hw4.model;
+
 import java.util.ArrayList;
-public class Epic extends Task{
-    ArrayList<Integer> childId;
+public class Epic extends Task {
+    public ArrayList<Integer> childId;
     public Epic(int taskId, String name, String description) {
         super(taskId, name, description);
         this.status = TaskStatus.NEW;
@@ -27,7 +29,7 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
-        String result = "Task{" +
+        String result = "hw4.model.Task{" +
                 "ID=" + taskId +
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +

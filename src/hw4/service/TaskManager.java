@@ -1,3 +1,10 @@
+package hw4.service;
+
+import hw4.model.Epic;
+import hw4.model.Subtask;
+import hw4.model.Task;
+import hw4.model.TaskStatus;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -7,7 +14,7 @@ public class TaskManager {
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
     HashMap<Integer, Task> tasks = new HashMap<>();
     HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer,Subtask> subtasks = new HashMap<>();
+    HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     private int generateTaskId(){
         return taskId++;
@@ -34,6 +41,7 @@ public class TaskManager {
         tasks.clear();
     }
     public void removeAllEpics() {
+        subtasks.clear();
         epics.clear();
     }
     public void removeAllSubTasks() {

@@ -1,3 +1,5 @@
+package hw4.model;
+
 import java.util.Objects;
 public class Task {
     int taskId;
@@ -53,7 +55,7 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "Task{" +
+        String result = "hw4.model.Task{" +
                 "ID=" + taskId +
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +

@@ -1,4 +1,6 @@
-public class Subtask extends Task{
+package hw4.model;
+
+public class Subtask extends Task {
     private int parentTaskId;
 
     public Subtask(int taskId, String name, String description, int parentTaskId) {
@@ -18,7 +20,7 @@ public class Subtask extends Task{
     }
     @Override
     public String toString() {
-        String result = "Task{" +
+        String result = "hw4.model.Task{" +
                 "ID=" + taskId +
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +
