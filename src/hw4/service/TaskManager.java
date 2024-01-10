@@ -45,8 +45,13 @@ public class TaskManager {
         epics.clear();
     }
     public void removeAllSubTasks() {
+        for (Subtask subtask : subtasks.values()) {
+            int parentId = subtask.getParentTaskId();
+            int taskId = subtask.getTaskId();
+            epics.get(parentId).removeSubtaskId(taskId);
+            setStatusEpic(parentId);
+        }
         subtasks.clear();
-//        setStatusEpic();
     }
 
     // 2.c  Получение по идентификатору.
@@ -72,6 +77,7 @@ public class TaskManager {
         if (hasParentTaskId) {
             epics.get(parentId).addSubtaskId(getTaskId());
             subtasks.put(generateTaskId(), subtask);
+            setStatusEpic(parentId);
         }
     }
     // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
@@ -83,17 +89,7 @@ public class TaskManager {
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
             subtasks.put(subtask.getTaskId(), subtask);
-            epics.get(parentId).setStatus(subtask.getStatus());
-            int countSubTask = epics.get(parentId).childId.size();
-            for (int i = 0;  i < countSubTask; i++) {
-                int count = 0;
-                if (subtask.getStatus().equals(TaskStatus.DONE)) {
-                    count++;
-                }
-                if (count == countSubTask){
-                    epics.get(parentId).setStatus(TaskStatus.DONE);
-                }
-            }
+            setStatusEpic(parentId);
         }
     }
 
@@ -106,11 +102,10 @@ public class TaskManager {
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
             epics.get(parentId).removeSubtaskId(taskId);
-//            setStatusEpic();
+            setStatusEpic(parentId);
         }
         subtasks.remove(taskId);
     }
-//    public Epic removeEpicById(int taskId){
     public void removeEpicById(int taskId){
         ArrayList<Integer> ids= epics.remove(taskId).getSubTaskIds();
         for (int id : ids) {
@@ -127,24 +122,28 @@ public class TaskManager {
         return list;
     }
 
-/*    public void  setStatusEpic(int parentId){
-        epics.get(parentId).setStatus(subtask.getStatus());
-        int countSubTask = epics.get(parentId).childId.size();
+    public void  setStatusEpic(int parentId){
+        boolean hasStatusNew = true;
+        boolean hasStatusDone = true;
         for (Integer taskId: epics.get(parentId).getSubTaskIds()) {
             Subtask subtask = subtasks.get(taskId);
-            int count = 0;
-            if (subtask.getStatus().equals(TaskStatus.DONE)) {
-                count++;
+            if (subtask.getStatus() != TaskStatus.NEW) {
+                hasStatusNew = false;
             }
-            if (count == countSubTask){
-            if (count == epics.get(parentId).getSubTaskIds().size()){
-                    epics.get(parentId).setStatus(TaskStatus.DONE);
-                }
-
-
+            if (subtask.getStatus() != TaskStatus.DONE) {
+                hasStatusDone = false;
+            }
+            if (hasStatusNew) {
+                epics.get(parentId).setStatus(TaskStatus.NEW);
+            }
+            else if (hasStatusDone) {
+                epics.get(parentId).setStatus(TaskStatus.DONE);
+            }
+            else {
+                epics.get(parentId).setStatus(TaskStatus.IN_PROGRESS);
             }
         }
-    } */
+    }
 }
 
 
