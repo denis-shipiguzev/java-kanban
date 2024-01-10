@@ -98,24 +98,24 @@ public class TaskManager {
     }
 
     // 2.f Удаление по идентификатору.
-    public Task removeTaskById(int taskId){
-        return tasks.remove(taskId);
+    public void removeTaskById(int taskId){
+        tasks.remove(taskId);
     }
-    public Subtask removeSubTaskById(int taskId){
+    public void removeSubTaskById(int taskId){
         int parentId = subtasks.get(taskId).getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
             epics.get(parentId).removeSubtaskId(taskId);
 //            setStatusEpic();
         }
-        return subtasks.remove(taskId);
+        subtasks.remove(taskId);
     }
-    public Epic removeEpicById(int taskId){
-        ArrayList<Integer> ids= epics.get(taskId).getSubTaskIds();
+//    public Epic removeEpicById(int taskId){
+    public void removeEpicById(int taskId){
+        ArrayList<Integer> ids= epics.remove(taskId).getSubTaskIds();
         for (int id : ids) {
             subtasks.remove(id);
         }
-        return epics.remove(taskId);
     }
     // 3.a  Получение списка всех подзадач определённого эпика.
     public ArrayList<Subtask> getSubTasksOfEpics(int taskId) {

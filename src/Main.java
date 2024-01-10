@@ -60,11 +60,12 @@ public class Main {
         4. И, наконец, попробуйте удалить одну из задач и один из эпиков.
         */
         System.out.println("---");
-        System.out.println(tm.removeTaskById(2));
+        tm.removeTaskById(2);
         System.out.println(tm.getAllTask());
         System.out.println("---");
-        System.out.println(tm.getSubTasksOfEpics(3));
-        System.out.println(tm.removeEpicById(3));
+        tm.getSubTasksOfEpics(3);
+        tm.removeSubTaskById(4);
+        tm.removeEpicById(3);
         System.out.println(tm.getAllEpics());
     }
 }
