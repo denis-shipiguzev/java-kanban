@@ -3,7 +3,7 @@ package hw4.service;
 import hw4.model.Epic;
 import hw4.model.Subtask;
 import hw4.model.Task;
-import hw4.model.TaskStatus;
+import hw4.model.enums.TaskStatus;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -46,6 +46,7 @@ public class TaskManager {
     }
     public void removeAllSubTasks() {
         subtasks.clear();
+//        setStatusEpic();
     }
 
     // 2.c  Получение по идентификатору.
@@ -105,6 +106,7 @@ public class TaskManager {
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
             epics.get(parentId).removeSubtaskId(taskId);
+//            setStatusEpic();
         }
         return subtasks.remove(taskId);
     }
@@ -124,6 +126,25 @@ public class TaskManager {
         }
         return list;
     }
+
+/*    public void  setStatusEpic(int parentId){
+        epics.get(parentId).setStatus(subtask.getStatus());
+        int countSubTask = epics.get(parentId).childId.size();
+        for (Integer taskId: epics.get(parentId).getSubTaskIds()) {
+            Subtask subtask = subtasks.get(taskId);
+            int count = 0;
+            if (subtask.getStatus().equals(TaskStatus.DONE)) {
+                count++;
+            }
+            if (count == countSubTask){
+            if (count == epics.get(parentId).getSubTaskIds().size()){
+                    epics.get(parentId).setStatus(TaskStatus.DONE);
+                }
+
+
+            }
+        }
+    } */
 }
 
 

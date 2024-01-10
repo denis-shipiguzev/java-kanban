@@ -1,7 +1,7 @@
 import hw4.model.Epic;
 import hw4.model.Subtask;
 import hw4.model.Task;
-import hw4.model.TaskStatus;
+import hw4.model.enums.TaskStatus;
 import hw4.service.TaskManager;
 
 public class Main {

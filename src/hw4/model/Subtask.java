@@ -1,5 +1,8 @@
 package hw4.model;
 
+import hw4.model.enums.TaskStatus;
+import hw4.model.enums.TaskType;
+
 public class Subtask extends Task {
     private int parentTaskId;
 

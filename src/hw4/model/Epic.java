@@ -1,5 +1,8 @@
 package hw4.model;
 
+import hw4.model.enums.TaskStatus;
+import hw4.model.enums.TaskType;
+
 import java.util.ArrayList;
 public class Epic extends Task {
     public ArrayList<Integer> childId;
@@ -9,14 +12,7 @@ public class Epic extends Task {
         this.type = TaskType.EPIC;
         this.childId = new ArrayList<Integer>();
     }
-/*
-    public Epic(int taskId, String name, String description, TaskStatus status) {
-        super(taskId, name, description);
-        this.status = status;
-        this.type = TaskType.EPIC;
-        this.childId = new ArrayList<Integer>();
-    }
-*/
+
     public ArrayList<Integer> getSubTaskIds() {
         return new ArrayList<>(childId);
     }
