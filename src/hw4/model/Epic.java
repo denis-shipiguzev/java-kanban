@@ -4,13 +4,15 @@ import hw4.model.enums.TaskStatus;
 import hw4.model.enums.TaskType;
 
 import java.util.ArrayList;
+
 public class Epic extends Task {
-    public ArrayList<Integer> childId;
+    protected ArrayList<Integer> childId;
+
     public Epic(int taskId, String name, String description) {
         super(taskId, name, description);
         this.status = TaskStatus.NEW;
         this.type = TaskType.EPIC;
-        this.childId = new ArrayList<Integer>();
+        this.childId = new ArrayList<>();
     }
 
     public ArrayList<Integer> getSubTaskIds() {
@@ -20,6 +22,7 @@ public class Epic extends Task {
     public void addSubtaskId(int id) {
         childId.add(id);
     }
+
     public void removeSubtaskId(int id) {
         childId.remove((Integer) id);
     }
@@ -32,7 +35,7 @@ public class Epic extends Task {
                 ", Name='" + name + '\'' +
                 ", Description='" + description + '\'' +
                 ", status='" + status + '\'' + '}';
-        if(!childId.isEmpty()) {
+        if (!childId.isEmpty()) {
             result = result + ", subtasks=" + childId;
         }
         return result;

@@ -4,6 +4,7 @@ import hw4.model.enums.TaskStatus;
 import hw4.model.enums.TaskType;
 
 import java.util.Objects;
+
 public class Task {
     protected int taskId;
     protected String name;
@@ -11,7 +12,7 @@ public class Task {
     protected TaskStatus status;
     protected TaskType type;
 
-    public Task (int taskId, String name, String description) {
+    public Task(int taskId, String name, String description) {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
@@ -19,7 +20,7 @@ public class Task {
         this.type = TaskType.TASK;
     }
 
-    public Task (int taskId, String name, String description, TaskStatus status) {
+    public Task(int taskId, String name, String description, TaskStatus status) {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
