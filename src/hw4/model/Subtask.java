@@ -4,7 +4,7 @@ import hw4.model.enums.TaskStatus;
 import hw4.model.enums.TaskType;
 
 public class Subtask extends Task {
-    private int parentTaskId;
+    private final int parentTaskId;
 
     public Subtask(int taskId, String name, String description, int parentTaskId) {
         super(taskId, name, description);

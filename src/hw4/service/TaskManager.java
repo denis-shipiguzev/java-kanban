@@ -12,9 +12,9 @@ public class TaskManager {
 
     public int taskId = 1;
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
-    protected HashMap<Integer, Task> tasks = new HashMap<>();
-    protected HashMap<Integer, Epic> epics = new HashMap<>();
-    protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     private int generateTaskId() {
         return taskId++;
@@ -136,7 +136,7 @@ public class TaskManager {
         return list;
     }
 
-    public void setStatusEpic(int parentId) {
+    private void setStatusEpic(int parentId) {
         boolean hasStatusNew = true;
         boolean hasStatusDone = true;
         for (Integer taskId : epics.get(parentId).getSubTaskIds()) {
