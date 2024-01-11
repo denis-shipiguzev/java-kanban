@@ -6,15 +6,16 @@ import hw4.model.enums.TaskType;
 public class Subtask extends Task {
     private final int parentTaskId;
 
-    public Subtask(int taskId, String name, String description, int parentTaskId) {
-        super(taskId, name, description);
+    public Subtask(String name, String description, int parentTaskId) {
+        super(name, description);
         this.status = TaskStatus.NEW;
         this.type = TaskType.SUBTUSK;
         this.parentTaskId = parentTaskId;
     }
 
     public Subtask(int taskId, String name, String description, int parentTaskId, TaskStatus status) {
-        super(taskId, name, description);
+        super(name, description);
+        this.taskId = taskId;
         this.status = status;
         this.type = TaskType.SUBTUSK;
         this.parentTaskId = parentTaskId;

@@ -10,18 +10,14 @@ import java.util.ArrayList;
 
 public class TaskManager {
 
-    public int taskId = 1;
+    public int taskId = 0;
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     private int generateTaskId() {
-        return taskId++;
-    }
-
-    public int getTaskId() {
-        return taskId;
+        return ++taskId;
     }
 
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
@@ -73,19 +69,22 @@ public class TaskManager {
 
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
     public void addTask(Task task) {
-        tasks.put(generateTaskId(), task);
+        tasks.put(generateTaskId(),task);
+        task.setTaskId(taskId);
     }
 
     public void addEpic(Epic epic) {
         epics.put(generateTaskId(), epic);
+        epic.setTaskId(taskId);
     }
 
-    public void addSubTask(Subtask subtask) {
+   public void addSubTask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
-            epics.get(parentId).addSubtaskId(getTaskId());
             subtasks.put(generateTaskId(), subtask);
+            epics.get(parentId).addSubtaskId(taskId);
+            subtask.setTaskId(taskId);
             setStatusEpic(parentId);
         }
     }

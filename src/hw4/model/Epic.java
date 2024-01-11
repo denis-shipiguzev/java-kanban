@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Epic extends Task {
     protected ArrayList<Integer> childId;
 
-    public Epic(int taskId, String name, String description) {
-        super(taskId, name, description);
+    public Epic(String name, String description) {
+        super(name, description);
         this.status = TaskStatus.NEW;
         this.type = TaskType.EPIC;
         this.childId = new ArrayList<>();
