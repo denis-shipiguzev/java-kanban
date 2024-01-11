@@ -69,7 +69,7 @@ public class TaskManager {
 
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
     public void addTask(Task task) {
-        tasks.put(generateTaskId(),task);
+        tasks.put(generateTaskId(), task);
         task.setTaskId(taskId);
     }
 
@@ -78,7 +78,7 @@ public class TaskManager {
         epic.setTaskId(taskId);
     }
 
-   public void addSubTask(Subtask subtask) {
+    public void addSubTask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
