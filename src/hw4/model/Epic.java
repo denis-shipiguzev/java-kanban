@@ -6,7 +6,7 @@ import hw4.model.enums.TaskType;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    protected ArrayList<Integer> childId;
+    private final ArrayList<Integer> childId;
 
     public Epic(String name, String description) {
         super(name, description);

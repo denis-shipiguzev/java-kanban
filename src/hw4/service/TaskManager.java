@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TaskManager {
 
-    public int taskId = 0;
+    private int taskId = 0;
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
@@ -92,6 +92,11 @@ public class TaskManager {
     // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     public void updateTask(Task task) {
         tasks.put(task.getTaskId(), task);
+    }
+
+    public void updateEpic(Epic epic) {
+        tasks.put(epic.getTaskId(), epic);
+        setStatusEpic(epic.getTaskId());
     }
 
     public void updateSubTask(Subtask subtask) {
