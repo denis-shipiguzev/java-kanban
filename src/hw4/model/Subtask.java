@@ -8,7 +8,6 @@ public class Subtask extends Task {
 
     public Subtask(String name, String description, int parentTaskId) {
         super(name, description);
-        this.status = TaskStatus.NEW;
         this.type = TaskType.SUBTUSK;
         this.parentTaskId = parentTaskId;
     }

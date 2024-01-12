@@ -71,11 +71,13 @@ public class TaskManager {
     public void addTask(Task task) {
         tasks.put(generateTaskId(), task);
         task.setTaskId(taskId);
+        task.setStatus(TaskStatus.NEW);
     }
 
     public void addEpic(Epic epic) {
         epics.put(generateTaskId(), epic);
         epic.setTaskId(taskId);
+        epic.setStatus(TaskStatus.NEW);
     }
 
     public void addSubTask(Subtask subtask) {
@@ -85,6 +87,7 @@ public class TaskManager {
             subtasks.put(generateTaskId(), subtask);
             epics.get(parentId).addSubtaskId(taskId);
             subtask.setTaskId(taskId);
+            subtask.setStatus(TaskStatus.NEW);
             setStatusEpic(parentId);
         }
     }
