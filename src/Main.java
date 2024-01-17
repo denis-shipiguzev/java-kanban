@@ -2,7 +2,8 @@ import hw4.model.Epic;
 import hw4.model.Subtask;
 import hw4.model.Task;
 import hw4.model.enums.TaskStatus;
-import hw4.service.TaskManager;
+import hw4.service.TaskManagers.InMemoryTaskManager;
+import hw4.service.TaskManagers.TaskManager;
 
 public class Main {
 
@@ -10,7 +11,7 @@ public class Main {
         /*
         1. Создайте две задачи, а также эпик с двумя подзадачами и эпик с одной подзадачей.
         */
-        TaskManager tm = new TaskManager();
+        TaskManager tm = new InMemoryTaskManager();
         Task task1 = new Task("Task 1", "Test task 1");
         tm.addTask(task1);
         Task task2 = new Task("Task 2", "Test task 2");
