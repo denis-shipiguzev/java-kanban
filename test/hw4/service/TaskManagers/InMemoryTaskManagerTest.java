@@ -39,11 +39,13 @@ class InMemoryTaskManagerTest {
         assertEquals(task, tasks.get(0), "Задачи не совпадают.");
     }
 
+    /*
+    проверьте, что объект Subtask нельзя сделать своим же эпиком;
+    */
     @Test
-    void updateSubtask(){
-        Subtask subtask1 = new Subtask(1,"Subtask 1", "Test subtask 1", 1, TaskStatus.NEW);
-        taskManager.addSubTask(subtask1);
-        assertNotEquals(subtask1.getTaskId(), subtask1.getParentTaskId(), "Задачи совпадают.");
-
+    void shouldSubtaskIdSameEpicId(){
+        Subtask subtask = new Subtask(1,"Subtask 1", "Test subtask 1", 1, TaskStatus.NEW);
+        taskManager.addSubTask(subtask);
+        assertNotEquals(subtask,taskManager.getSubTaskByTaskId(1),"Task created");
     }
 }
