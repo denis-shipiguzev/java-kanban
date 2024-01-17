@@ -93,8 +93,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addEpic(Epic epic) {
-        epics.put(generateTaskId(), epic);
-        epic.setTaskId(taskId);
+        ArrayList<Integer> ids = epic.getSubTaskIds();
+        boolean hasEqualsTaskId = false;
+        for (int id : ids) {
+            if (id == epic.getTaskId()) {
+                hasEqualsTaskId = true;
+            }
+        }
+        if (!hasEqualsTaskId) {
+            epics.put(generateTaskId(), epic);
+            setStatusEpic(epic.getTaskId());
+        }
         return epic.getTaskId();
     }
 
@@ -128,7 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         if (!hasEqualsTaskId) {
-            tasks.put(epic.getTaskId(), epic);
+            epics.put(epic.getTaskId(), epic);
             setStatusEpic(epic.getTaskId());
         }
         return epic.getTaskId();

@@ -1,13 +1,13 @@
 package hw4.service.TaskManagers;
 
+import hw4.model.Epic;
 import hw4.model.Subtask;
 import hw4.model.Task;
 import hw4.model.enums.TaskStatus;
-import hw4.service.TaskManagers.InMemoryTaskManager;
-import hw4.service.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,12 +40,22 @@ class InMemoryTaskManagerTest {
     }
 
     /*
+    проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи;
+    */
+    @Test
+    void shouldEpicSameSubtask(){
+        ArrayList<Integer> childId = new ArrayList<>(List.of(1));
+        Epic epic = new Epic(1,"Epic 1", "Test epic 1", childId );
+        taskManager.addEpic(epic);
+        assertNotEquals(epic,taskManager.getEpicByTaskId(1),"Epic created");
+    }
+    /*
     проверьте, что объект Subtask нельзя сделать своим же эпиком;
     */
     @Test
-    void shouldSubtaskIdSameEpicId(){
+    void shouldSubtaskSameEpic(){
         Subtask subtask = new Subtask(1,"Subtask 1", "Test subtask 1", 1, TaskStatus.NEW);
         taskManager.addSubTask(subtask);
-        assertNotEquals(subtask,taskManager.getSubTaskByTaskId(1),"Task created");
+        assertNotEquals(subtask,taskManager.getSubTaskByTaskId(1),"Subtask created");
     }
 }
