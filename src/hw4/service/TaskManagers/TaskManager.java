@@ -5,11 +5,12 @@ import hw4.model.Subtask;
 import hw4.model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
-    ArrayList<Task> getAllTask();
+    ArrayList<Task> getAllTasks();
 
     ArrayList<Epic> getAllEpics();
 
@@ -52,4 +53,6 @@ public interface TaskManager {
 
     // 3.a  Получение списка всех подзадач определённого эпика.
     ArrayList<Subtask> getSubTasksOfEpics(int taskId);
+
+    List<Task> getHistory();
 }

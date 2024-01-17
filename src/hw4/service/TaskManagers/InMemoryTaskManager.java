@@ -4,13 +4,17 @@ import hw4.model.Epic;
 import hw4.model.Subtask;
 import hw4.model.Task;
 import hw4.model.enums.TaskStatus;
+import hw4.service.Managers;
+import hw4.service.HistoryManagers.HistoryManager;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
 
     private int taskId = 0;
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
@@ -23,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
     @Override
-    public ArrayList<Task> getAllTask() {
+    public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
 
@@ -63,16 +67,19 @@ public class InMemoryTaskManager implements TaskManager {
     // 2.c  Получение по идентификатору.
     @Override
     public Task getTaskByTaskId(int taskId) {
+        historyManager.add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
     @Override
     public Epic getEpicByTaskId(int taskId) {
+        historyManager.add(epics.get(taskId));
         return epics.get(taskId);
     }
 
     @Override
     public Subtask getSubTaskByTaskId(int taskId) {
+        historyManager.add(subtasks.get(taskId));
         return subtasks.get(taskId);
     }
 
@@ -188,6 +195,12 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
+    }
+
 }
 
 
