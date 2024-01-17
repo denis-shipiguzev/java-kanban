@@ -25,6 +25,9 @@ class HistoryManagerTest {
         assertEquals(1, history.size(), "History is not empty.");
     }
 
+    /*
+    убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
+    */
     @Test
     void shouldEqualsTaskAndHistoryTask(){
         Task task = new Task("Test addTask 1", "Test addTask description 1");
