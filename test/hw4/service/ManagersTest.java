@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagersTest {
 
     @Test
-    void getDefault() {
+    void shouldInitializeTaskManager() {
         TaskManager taskManager = Managers.getDefault();
         assertNotNull(taskManager, "TaskManager not initialized");
     }
 
     @Test
-    void getDefaultHistory() {
+    void shouldInitializeHistoryManager() {
         HistoryManager historyManager = Managers.getDefaultHistory();
         assertNotNull(historyManager, "HistoryManager not initialized");
     }
