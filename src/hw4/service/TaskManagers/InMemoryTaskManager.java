@@ -24,6 +24,10 @@ public class InMemoryTaskManager implements TaskManager {
         return ++taskId;
     }
 
+    private int getGeneratedTaskId() {
+        return taskId;
+    }
+
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
     @Override

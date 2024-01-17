@@ -23,6 +23,7 @@ public class Task {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
+        this.status = TaskStatus.NEW;
         this.type = TaskType.TASK;
     }
 
@@ -33,7 +34,6 @@ public class Task {
         this.status = status;
         this.type = TaskType.TASK;
     }
-
 
     public String getDescription() {
         return description;
