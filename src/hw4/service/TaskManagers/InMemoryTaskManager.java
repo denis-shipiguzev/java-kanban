@@ -85,19 +85,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
     @Override
-    public void addTask(Task task) {
+    public int addTask(Task task) {
         tasks.put(generateTaskId(), task);
         task.setTaskId(taskId);
+        return task.getTaskId();
     }
 
     @Override
-    public void addEpic(Epic epic) {
+    public int addEpic(Epic epic) {
         epics.put(generateTaskId(), epic);
         epic.setTaskId(taskId);
+        return epic.getTaskId();
     }
 
     @Override
-    public void addSubTask(Subtask subtask) {
+    public int addSubTask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
@@ -106,16 +108,18 @@ public class InMemoryTaskManager implements TaskManager {
             subtask.setTaskId(taskId);
             setStatusEpic(parentId);
         }
+        return subtask.getTaskId();
     }
 
     // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     @Override
-    public void updateTask(Task task) {
+    public int updateTask(Task task) {
         tasks.put(task.getTaskId(), task);
+        return task.getTaskId();
     }
 
     @Override
-    public void updateEpic(Epic epic) {
+    public int updateEpic(Epic epic) {
         ArrayList<Integer> ids = epic.getSubTaskIds();
         boolean hasEqualsTaskId = false;
         for (int id : ids) {
@@ -127,16 +131,18 @@ public class InMemoryTaskManager implements TaskManager {
             tasks.put(epic.getTaskId(), epic);
             setStatusEpic(epic.getTaskId());
         }
+        return epic.getTaskId();
     }
 
     @Override
-    public void updateSubTask(Subtask subtask) {
+    public int updateSubTask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
             subtasks.put(subtask.getTaskId(), subtask);
             setStatusEpic(parentId);
         }
+        return subtask.getTaskId();
     }
 
     // 2.f Удаление по идентификатору.

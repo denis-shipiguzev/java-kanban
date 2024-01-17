@@ -31,18 +31,18 @@ public interface TaskManager {
     Subtask getSubTaskByTaskId(int taskId);
 
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
-    void addTask(Task task);
+    int addTask(Task task);
 
-    void addEpic(Epic epic);
+    int addEpic(Epic epic);
 
-    void addSubTask(Subtask subtask);
+    int addSubTask(Subtask subtask);
 
     // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
-    void updateTask(Task task);
+    int updateTask(Task task);
 
-    void updateEpic(Epic epic);
+    int updateEpic(Epic epic);
 
-    void updateSubTask(Subtask subtask);
+    int updateSubTask(Subtask subtask);
 
     // 2.f Удаление по идентификатору.
     void removeTaskById(int taskId);
