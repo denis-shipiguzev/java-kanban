@@ -11,19 +11,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HistoryManagerTest {
     private HistoryManager historyManager;
-    private Task task;
 
     @BeforeEach
     public void createHistoryManager() {
         historyManager = Managers.getDefaultHistory();
-        task = new Task("Покупки", "Список покупок");
     }
 
     @Test
     void add() {
-        historyManager.add(task);
+        historyManager.add(new Task("Test addTask 1", "Test addTask description 1"));
         final List<Task> history = historyManager.getHistory();
-        assertNotNull(history, "История не пустая.");
-        assertEquals(1, history.size(), "История не пустая.");
+        assertNotNull(history, "History is not empty.");
+        assertEquals(1, history.size(), "History is not empty.");
+    }
+
+    @Test
+    void shouldEqualsTaskAndHistoryTask(){
+        Task task = new Task("Test addTask 1", "Test addTask description 1");
+        historyManager.add(task);
+        Task historyTask = (Task) historyManager.getHistory();
+        assertEquals(task, historyTask, "Tasks are not equal.");
     }
 }

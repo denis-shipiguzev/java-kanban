@@ -11,12 +11,12 @@ class ManagersTest {
     @Test
     void shouldInitializeTaskManager() {
         TaskManager taskManager = Managers.getDefault();
-        assertNotNull(taskManager, "TaskManager not initialized");
+        assertNotNull(taskManager, "TaskManager not initialized.");
     }
 
     @Test
     void shouldInitializeHistoryManager() {
         HistoryManager historyManager = Managers.getDefaultHistory();
-        assertNotNull(historyManager, "HistoryManager not initialized");
+        assertNotNull(historyManager, "HistoryManager not initialized.");
     }
 }
