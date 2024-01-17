@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
 
     private TaskManager taskManager;
-//    private Task task;
 
     @BeforeEach
     public void createTaskManager() {
@@ -38,12 +37,40 @@ class InMemoryTaskManagerTest {
         assertEquals(1, tasks.size(), "Неверное количество задач.");
         assertEquals(task, tasks.get(0), "Задачи не совпадают.");
     }
-
+    /*
+    проверьте, что экземпляры класса Task равны друг другу, если равен их id;
+     */
+    @Test
+    void shouldTaskSameTask(){
+        Task task = new Task("Task", "Test task 1");
+        final int taskId = taskManager.addTask(task);
+        final Task savedTask = taskManager.getTaskByTaskId(taskId);
+        assertEquals(task, savedTask, "Tasks are not equal.");
+    }
+    /*
+    проверьте, что наследники класса Task равны друг другу, если равен их id;
+     */
+    @Test
+    void shouldEpicSameEpic(){
+        Epic epic = new Epic("Epic", "Test epic 1");
+        final int epicId = taskManager.addEpic(epic);
+        final Epic savedEpic = taskManager.getEpicByTaskId(epicId);
+        assertEquals(epic, savedEpic, "Epics are not equal.");
+    }
+    @Test
+    void shouldSubtaskSameSubtask(){
+        Epic epic = new Epic("Epic", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask = new Subtask("Test addTask", "Test addTask description", epic.getTaskId());
+        final int subtaskId = taskManager.addSubTask(subtask);
+        final Subtask savedSubtask = taskManager.getSubTaskByTaskId(subtaskId);
+        assertEquals(subtask, savedSubtask, "Subtasks are not equal.");
+    }
     /*
     проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи;
     */
     @Test
-    void shouldEpicSameSubtask(){
+    void shouldEpicNotSameSubtask(){
         ArrayList<Integer> childId = new ArrayList<>(List.of(1));
         Epic epic = new Epic(1,"Epic 1", "Test epic 1", childId );
         taskManager.addEpic(epic);
@@ -53,8 +80,8 @@ class InMemoryTaskManagerTest {
     проверьте, что объект Subtask нельзя сделать своим же эпиком;
     */
     @Test
-    void shouldSubtaskSameEpic(){
-        Subtask subtask = new Subtask(1,"Subtask 1", "Test subtask 1", 1, TaskStatus.NEW);
+    void shouldSubtaskNotSameEpic(){
+        Subtask subtask = new Subtask(1,"Subtask 1", "Test subtask 1", 1);
         taskManager.addSubTask(subtask);
         assertNotEquals(subtask,taskManager.getSubTaskByTaskId(1),"Subtask created");
     }

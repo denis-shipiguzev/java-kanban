@@ -13,6 +13,14 @@ public class Subtask extends Task {
         this.parentTaskId = parentTaskId;
     }
 
+    public Subtask(int taskId, String name, String description, int parentTaskId) {
+        super(name, description);
+        this.taskId = taskId;
+        this.status = TaskStatus.NEW;
+        this.type = TaskType.SUBTUSK;
+        this.parentTaskId = parentTaskId;
+    }
+
     public Subtask(int taskId, String name, String description, int parentTaskId, TaskStatus status) {
         super(name, description);
         this.taskId = taskId;
