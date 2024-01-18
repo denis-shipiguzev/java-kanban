@@ -10,22 +10,19 @@ import hw4.service.HistoryManagers.HistoryManager;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
     private int taskId = 0;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private int generateTaskId() {
         return ++taskId;
-    }
-
-    private int getGeneratedTaskId() {
-        return taskId;
     }
 
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
@@ -97,11 +94,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addEpic(Epic epic) {
-        ArrayList<Integer> ids = epic.getSubTaskIds();
+        List<Integer> ids = epic.getSubTaskIds();
         boolean hasEqualsTaskId = false;
         for (int id : ids) {
             if (id == epic.getTaskId()) {
                 hasEqualsTaskId = true;
+                break;
             }
         }
         if (!hasEqualsTaskId) {
@@ -133,11 +131,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int updateEpic(Epic epic) {
-        ArrayList<Integer> ids = epic.getSubTaskIds();
+        List<Integer> ids = epic.getSubTaskIds();
         boolean hasEqualsTaskId = false;
         for (int id : ids) {
             if (id == epic.getTaskId()) {
                 hasEqualsTaskId = true;
+                break;
             }
         }
         if (!hasEqualsTaskId) {
@@ -177,7 +176,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeEpicById(int taskId) {
-        ArrayList<Integer> ids = epics.remove(taskId).getSubTaskIds();
+        List<Integer> ids = epics.remove(taskId).getSubTaskIds();
         for (int id : ids) {
             subtasks.remove(id);
         }

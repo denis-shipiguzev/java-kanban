@@ -4,17 +4,16 @@ import hw4.model.Epic;
 import hw4.model.Subtask;
 import hw4.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    ArrayList<Subtask> getAllSubTasks();
+    List<Subtask> getAllSubTasks();
 
     // 2.b  Удаление всех задач.
     void removeAllTasks();
@@ -52,7 +51,7 @@ public interface TaskManager {
     void removeEpicById(int taskId);
 
     // 3.a  Получение списка всех подзадач определённого эпика.
-    ArrayList<Subtask> getSubTasksOfEpics(int taskId);
+    List<Subtask> getSubTasksOfEpics(int taskId);
 
     List<Task> getHistory();
 }

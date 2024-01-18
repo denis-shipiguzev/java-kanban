@@ -6,10 +6,14 @@ import hw4.service.TaskManagers.InMemoryTaskManager;
 import hw4.service.HistoryManagers.InMemoryHistoryManager;
 
 public class Managers {
+    private Managers() {
+    }
+
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
-    public static HistoryManager getDefaultHistory(){
+
+    public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 }

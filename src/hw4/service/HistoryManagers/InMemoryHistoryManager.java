@@ -2,24 +2,28 @@ package hw4.service.HistoryManagers;
 
 import hw4.model.Task;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    public static List<Task> tasksHistory = new ArrayList<>();
+    private final LinkedList<Task> tasksHistory = new LinkedList<>();
+    private static final int HISTORY_MAX_SIZE = 10;
 
     @Override
     public void add(Task task) {
-        if (tasksHistory.size() < 10) {
+        if (task == null) {
+            return;
+        }
+        if (tasksHistory.size() < HISTORY_MAX_SIZE) {
             tasksHistory.add(task);
         } else {
-            tasksHistory.remove(0);
+            tasksHistory.removeFirst();
             tasksHistory.add(task);
         }
     }
 
     @Override
     public List<Task> getHistory() {
-        return tasksHistory;
+        return List.copyOf(tasksHistory);
     }
 }

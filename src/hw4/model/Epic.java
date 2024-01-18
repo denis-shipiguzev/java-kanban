@@ -4,9 +4,10 @@ import hw4.model.enums.TaskStatus;
 import hw4.model.enums.TaskType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private final ArrayList<Integer> childId;
+    private final List<Integer> childId;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -27,7 +28,7 @@ public class Epic extends Task {
         this.childId = childId;
     }
 
-    public ArrayList<Integer> getSubTaskIds() {
+    public List<Integer> getSubTaskIds() {
         return new ArrayList<>(childId);
     }
 
