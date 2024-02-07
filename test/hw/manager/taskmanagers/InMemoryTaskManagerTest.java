@@ -1,8 +1,8 @@
-package hw4.service.TaskManagers;
+package hw.manager.taskmanagers;
 
-import hw4.model.Epic;
-import hw4.model.Subtask;
-import hw4.model.Task;
+import hw.model.Epic;
+import hw.model.Subtask;
+import hw.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
-package hw4.service.HistoryManagers;
+package hw.manager.historymanagers;
 
-import hw4.model.Task;
-import hw4.service.Managers;
+import hw.model.Task;
+import hw.manager.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

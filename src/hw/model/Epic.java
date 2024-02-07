@@ -1,7 +1,7 @@
-package hw4.model;
+package hw.model;
 
-import hw4.model.enums.TaskStatus;
-import hw4.model.enums.TaskType;
+import hw.model.enums.TaskStatus;
+import hw.model.enums.TaskType;
 
 import java.util.ArrayList;
 import java.util.List;

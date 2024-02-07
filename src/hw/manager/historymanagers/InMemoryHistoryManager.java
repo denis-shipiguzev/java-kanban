@@ -1,6 +1,6 @@
-package hw4.service.HistoryManagers;
+package hw.manager.historymanagers;
 
-import hw4.model.Task;
+import hw.model.Task;
 
 import java.util.HashMap;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
-import hw4.model.Epic;
-import hw4.model.Subtask;
-import hw4.model.Task;
-import hw4.model.enums.TaskStatus;
-import hw4.service.Managers;
-import hw4.service.TaskManagers.TaskManager;
+import hw.model.Epic;
+import hw.model.Subtask;
+import hw.model.Task;
+import hw.model.enums.TaskStatus;
+import hw.manager.Managers;
+import hw.manager.taskmanagers.TaskManager;
 
 public class Main {
 
