@@ -5,7 +5,9 @@ import java.util.List;
 import hw4.model.Task;
 
 public interface HistoryManager {
-    void add(Task task); // Добавить
+    void add(Task task);
 
-    List<Task> getHistory(); // Получить
+    void remove(int id);
+
+    List<Task> getHistory();
 }
