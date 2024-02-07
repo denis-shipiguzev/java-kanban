@@ -105,4 +105,22 @@ class InMemoryTaskManagerTest {
         assertEquals(epicId, epic.getTaskId(), "Invalid identifier.");
         assertEquals(subtaskId, subtask.getTaskId(), "Invalid identifier.");
     }
+    @Test
+    void shouldRemoveSubtaskFromEpicWhenDeleted(){
+        Epic epic = new Epic("Epic 1", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
+        taskManager.addSubTask(subtask);
+        taskManager.removeSubTaskById(subtask.getTaskId());
+        final List<Subtask> subtasks = taskManager.getSubTasksOfEpics(epic.getTaskId());
+        assertEquals(0, subtasks.size(), "subtasks of epic is not empty.");
+    }
+    @Test
+    void shouldSetDescription(){
+        Task task = new Task("Test addNewTask", "Test addNewTask description");
+        final int taskId = taskManager.addTask(task);
+        task.setDescription("Test edit NewTask description");
+        final Task savedTask = taskManager.getTaskByTaskId(taskId);
+        assertEquals(task, savedTask, "Cannot set task description.");
+    }
 }
