@@ -1,11 +1,11 @@
-package hw4.service.TaskManagers;
+package hw.manager.taskmanagers;
 
-import hw4.model.Epic;
-import hw4.model.Subtask;
-import hw4.model.Task;
-import hw4.model.enums.TaskStatus;
-import hw4.service.Managers;
-import hw4.service.HistoryManagers.HistoryManager;
+import hw.model.Epic;
+import hw.model.Subtask;
+import hw.model.Task;
+import hw.model.enums.TaskStatus;
+import hw.manager.Managers;
+import hw.manager.historymanagers.HistoryManager;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -161,6 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTaskById(int taskId) {
         tasks.remove(taskId);
+        historyManager.remove(taskId);
     }
 
     @Override
@@ -172,11 +173,13 @@ public class InMemoryTaskManager implements TaskManager {
             setStatusEpic(parentId);
         }
         subtasks.remove(taskId);
+        historyManager.remove(taskId);
     }
 
     @Override
     public void removeEpicById(int taskId) {
         List<Integer> ids = epics.remove(taskId).getSubTaskIds();
+        historyManager.remove(taskId);
         for (int id : ids) {
             subtasks.remove(id);
         }

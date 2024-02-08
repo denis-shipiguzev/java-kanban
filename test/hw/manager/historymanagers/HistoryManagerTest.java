@@ -1,7 +1,7 @@
-package hw4.service.HistoryManagers;
+package hw.manager.historymanagers;
 
-import hw4.model.Task;
-import hw4.service.Managers;
+import hw.model.Task;
+import hw.manager.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,10 +29,28 @@ class HistoryManagerTest {
     убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     */
     @Test
-    void shouldEqualsTaskAndHistoryTask(){
+    void shouldEqualsTaskAndHistoryTask() {
         Task task = new Task("Test addTask 1", "Test addTask description 1");
         historyManager.add(task);
         Task historyTask = historyManager.getHistory().get(0);
         assertEquals(task, historyTask, "Tasks are not equal.");
+    }
+
+    @Test
+    void shouldRemoveHistoryTask() {
+        Task task = new Task("Test addTask 1", "Test addTask description 1");
+        historyManager.add(task);
+        historyManager.remove(task.getTaskId());
+        final List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size(), "History task not deleted.");
+    }
+
+    @Test
+    void shouldRemoveDuplicateHistoryTask() {
+        historyManager.add(new Task(1, "Test addTask 1", "Test addTask description 1"));
+        historyManager.add(new Task(2, "Test addTask 2", "Test addTask description 2"));
+        historyManager.add(new Task(1, "Test addTask 1", "Test addTask description 1"));
+        final List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size(), "Duplicate tasks in history found.");
     }
 }

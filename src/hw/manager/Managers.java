@@ -1,9 +1,9 @@
-package hw4.service;
+package hw.manager;
 
-import hw4.service.TaskManagers.TaskManager;
-import hw4.service.HistoryManagers.HistoryManager;
-import hw4.service.TaskManagers.InMemoryTaskManager;
-import hw4.service.HistoryManagers.InMemoryHistoryManager;
+import hw.manager.taskmanagers.TaskManager;
+import hw.manager.historymanagers.HistoryManager;
+import hw.manager.taskmanagers.InMemoryTaskManager;
+import hw.manager.historymanagers.InMemoryHistoryManager;
 
 public class Managers {
     private Managers() {

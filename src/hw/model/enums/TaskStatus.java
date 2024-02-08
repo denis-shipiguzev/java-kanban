@@ -1,4 +1,4 @@
-package hw4.model.enums;
+package hw.model.enums;
 
 public enum TaskStatus {
     NEW,

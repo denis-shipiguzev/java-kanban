@@ -1,7 +1,7 @@
-package hw4.service;
+package hw.manager;
 
-import hw4.service.TaskManagers.TaskManager;
-import hw4.service.HistoryManagers.HistoryManager;
+import hw.manager.taskmanagers.TaskManager;
+import hw.manager.historymanagers.HistoryManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
