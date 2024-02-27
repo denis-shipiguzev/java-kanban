@@ -1,7 +1,7 @@
-package hw.model.enums;
+package main.java.hw.model.enums;
 
 public enum TaskType {
     TASK,
     EPIC,
-    SUBTUSK
+    SUBTASK
 }

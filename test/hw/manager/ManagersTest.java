@@ -1,7 +1,8 @@
 package hw.manager;
 
-import hw.manager.taskmanagers.TaskManager;
-import hw.manager.historymanagers.HistoryManager;
+import main.java.hw.managers.Managers;
+import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.managers.historymanagers.HistoryManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

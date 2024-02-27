@@ -1,7 +1,8 @@
 package hw.manager.historymanagers;
 
-import hw.model.Task;
-import hw.manager.Managers;
+import main.java.hw.managers.historymanagers.HistoryManager;
+import main.java.hw.model.Task;
+import main.java.hw.managers.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

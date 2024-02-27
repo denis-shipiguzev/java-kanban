@@ -1,8 +1,8 @@
-package hw.manager.taskmanagers;
+package main.java.hw.managers.taskmanagers;
 
-import hw.model.Epic;
-import hw.model.Subtask;
-import hw.model.Task;
+import main.java.hw.model.Epic;
+import main.java.hw.model.Subtask;
+import main.java.hw.model.Task;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package hw.manager.historymanagers;
+package main.java.hw.managers.historymanagers;
 
-import hw.model.Task;
+import main.java.hw.managers.historymanagers.HistoryManager;
+import main.java.hw.model.Task;
 
 import java.util.HashMap;
 import java.util.ArrayList;

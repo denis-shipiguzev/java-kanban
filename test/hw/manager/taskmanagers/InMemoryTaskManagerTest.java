@@ -1,8 +1,10 @@
 package hw.manager.taskmanagers;
 
-import hw.model.Epic;
-import hw.model.Subtask;
-import hw.model.Task;
+import main.java.hw.managers.taskmanagers.InMemoryTaskManager;
+import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.model.Epic;
+import main.java.hw.model.Subtask;
+import main.java.hw.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
