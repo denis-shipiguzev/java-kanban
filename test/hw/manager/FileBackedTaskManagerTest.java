@@ -5,7 +5,6 @@ import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Epic;
 import main.java.hw.model.Subtask;
 import main.java.hw.model.Task;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,12 +25,6 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager = new FileBackedTaskManager(tmpFile.toPath());
     }
 
-    @AfterEach
-    public void dropFileBackTaskManager() throws IOException {
-        fileBackedTaskManager.removeAllEpics();
-        fileBackedTaskManager.removeAllSubTasks();
-        fileBackedTaskManager.removeAllTasks();
-    }
 
     @Test
     public void shouldReturnTasksAndHistoryAfterCreating() {
@@ -57,17 +50,16 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void shouldReturnTasksAndHistoryAfterLoading() {
-
         tasksForTest = new File(String.valueOf(Path.of("src/main/resources/tasksForTest.csv")));
+        TaskManager testLoadFileBackedTaskManager;
         try {
-            fileBackedTaskManager = FileBackedTaskManager.loadFromFile(tasksForTest);
+            testLoadFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tasksForTest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        assertEquals(1, fileBackedTaskManager.getAllTasks().size());
-        assertEquals(1, fileBackedTaskManager.getAllEpics().size());
-        assertEquals(1, fileBackedTaskManager.getAllSubTasks().size());
-        assertEquals(2, fileBackedTaskManager.getHistory().size());
+        assertEquals(2, testLoadFileBackedTaskManager.getAllTasks().size());
+        assertEquals(2, testLoadFileBackedTaskManager.getAllEpics().size());
+        assertEquals(2, testLoadFileBackedTaskManager.getAllSubTasks().size());
+        assertEquals(3, testLoadFileBackedTaskManager.getHistory().size());
     }
 }

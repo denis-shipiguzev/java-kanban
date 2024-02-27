@@ -14,11 +14,11 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
-    private static Path path;
+    private final Path path;
     private static final String HEADER = "id,type,name,status,description,epic";
 
     public FileBackedTaskManager(Path path) {
-        FileBackedTaskManager.path = path;
+        this.path = path;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public static FileBackedTaskManager loadFromFile(File file) throws IOException {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.toPath());
-        try (BufferedReader reader = Files.newBufferedReader(path.toFile().toPath(), StandardCharsets.UTF_8)) {
+        try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
             List<String> lines = new java.util.ArrayList<>(reader.lines().toList());
             boolean hasHEADER = lines.get(0).trim().equals(HEADER);
             if (hasHEADER) {
