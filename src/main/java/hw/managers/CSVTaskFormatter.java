@@ -52,7 +52,7 @@ public class CSVTaskFormatter {
 
     public static List<Integer> historyFromString(String value) {
         List<Integer> history = new ArrayList<>();
-        if (value.isBlank()||value.isEmpty()) {
+        if (value.isBlank() || value.isEmpty()) {
             return history;
         }
         String[] values = value.split(DELIMITER);
