@@ -146,19 +146,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     Task task = CSVTaskFormatter.fromString(line);
                     TaskType type = CSVTaskFormatter.fromString(line).getType();
                     switch (type) {
-                        case EPIC -> epics.put(task.getTaskId(), (Epic) task);
-                        case SUBTASK -> subtasks.put(task.getTaskId(), (Subtask) task);
-                        case TASK -> tasks.put(task.getTaskId(), task);
+                        case EPIC -> fileBackedTaskManager.epics.put(task.getTaskId(), (Epic) task);
+                        case SUBTASK -> fileBackedTaskManager.subtasks.put(task.getTaskId(), (Subtask) task);
+                        case TASK -> fileBackedTaskManager.tasks.put(task.getTaskId(), task);
                     }
                 }
             }
             for (Integer id : history) {
-                if (tasks.containsKey(id)) {
-                    historyManager.add(tasks.get(id));
-                } else if (subtasks.containsKey(id)) {
-                    historyManager.add(subtasks.get(id));
-                } else if (epics.containsKey(id)) {
-                    historyManager.add(epics.get(id));
+                if (fileBackedTaskManager.tasks.containsKey(id)) {
+                    historyManager.add(fileBackedTaskManager.tasks.get(id));
+                } else if (fileBackedTaskManager.subtasks.containsKey(id)) {
+                    historyManager.add(fileBackedTaskManager.subtasks.get(id));
+                } else if (fileBackedTaskManager.epics.containsKey(id)) {
+                    historyManager.add(fileBackedTaskManager.epics.get(id));
                 }
             }
         } catch (IOException e) {
