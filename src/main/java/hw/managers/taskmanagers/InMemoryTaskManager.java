@@ -15,7 +15,7 @@ import java.util.Map;
 public class InMemoryTaskManager implements TaskManager {
 
     private int taskId = 0;
-    protected static final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
     protected final Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();

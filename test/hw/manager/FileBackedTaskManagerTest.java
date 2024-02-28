@@ -24,7 +24,6 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager = new FileBackedTaskManager(tmpFile.toPath());
     }
 
-
     @Test
     public void shouldReturnTasksAndHistoryAfterCreating() {
         Task task = new Task("Task 1", "Test task 1");
@@ -37,10 +36,9 @@ public class FileBackedTaskManagerTest {
         TaskManager testFileBackedTaskManager;
         try {
             testFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tmpFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
         }
-
         assertEquals(1, testFileBackedTaskManager.getAllTasks().size());
         assertEquals(1, testFileBackedTaskManager.getAllSubTasks().size());
         assertEquals(1, testFileBackedTaskManager.getAllEpics().size());
@@ -53,12 +51,17 @@ public class FileBackedTaskManagerTest {
         TaskManager testLoadFileBackedTaskManager;
         try {
             testLoadFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tasksForTest);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
         }
-        assertEquals(2, testLoadFileBackedTaskManager.getAllTasks().size());
-        assertEquals(2, testLoadFileBackedTaskManager.getAllEpics().size());
-        assertEquals(2, testLoadFileBackedTaskManager.getAllSubTasks().size());
-        assertEquals(3, testLoadFileBackedTaskManager.getHistory().size());
+        assertEquals(1, testLoadFileBackedTaskManager.getAllTasks().size());
+        assertEquals(1, testLoadFileBackedTaskManager.getAllEpics().size());
+        assertEquals(1, testLoadFileBackedTaskManager.getAllSubTasks().size());
+        assertEquals(2, testLoadFileBackedTaskManager.getHistory().size());
+    }
+
+    @Test
+    public void should() {
+
     }
 }

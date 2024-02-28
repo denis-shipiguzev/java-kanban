@@ -13,7 +13,7 @@ import java.util.List;
 public class CSVTaskFormatter {
     private static final String DELIMITER = ",";
 
-    public static String toString(Task task) {
+    public String toString(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append(task.getTaskId()).append(DELIMITER);
         sb.append(task.getType()).append(DELIMITER);
@@ -26,7 +26,7 @@ public class CSVTaskFormatter {
         return sb.toString();
     }
 
-    public static Task fromString(String value) {
+    public Task fromString(String value) {
         String[] values = value.split(DELIMITER);
         int epicId = 0;
         int taskId = Integer.parseInt(values[0]);
@@ -50,7 +50,7 @@ public class CSVTaskFormatter {
         }
     }
 
-    public static List<Integer> historyFromString(String value) {
+    public List<Integer> historyFromString(String value) {
         List<Integer> history = new ArrayList<>();
         if (value.isBlank() || value.isEmpty()) {
             return history;
@@ -62,7 +62,7 @@ public class CSVTaskFormatter {
         return history;
     }
 
-    public static String historyToString(HistoryManager manager) {
+    public String historyToString(HistoryManager manager) {
         StringBuilder sb = new StringBuilder();
         for (Task task : manager.getHistory()) {
             sb.append(task.getTaskId()).append(DELIMITER);
