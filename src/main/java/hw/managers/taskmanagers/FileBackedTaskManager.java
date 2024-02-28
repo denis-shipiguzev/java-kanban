@@ -125,7 +125,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static FileBackedTaskManager loadFromFile(File file) throws IOException {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.toPath());
         try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
-            List<String> lines = new java.util.ArrayList<>(reader.lines().toList());
+            List<String> lines = reader.lines().toList();
             boolean hasHEADER = lines.get(0).trim().equals(HEADER);
             if (hasHEADER) {
                 lines.remove(lines.get(0));
