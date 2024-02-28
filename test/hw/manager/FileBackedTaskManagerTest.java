@@ -1,5 +1,6 @@
 package hw.manager;
 
+import main.java.hw.exceptions.ManagerSaveException;
 import main.java.hw.managers.taskmanagers.FileBackedTaskManager;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Epic;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class FileBackedTaskManagerTest {
-    private TaskManager fileBackedTaskManager;
+    protected TaskManager fileBackedTaskManager;
     private File tmpFile;
 
     @BeforeEach
@@ -37,7 +38,7 @@ public class FileBackedTaskManagerTest {
         try {
             testFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tmpFile);
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            throw new ManagerSaveException("Error reading from file.", exception);
         }
         assertEquals(1, testFileBackedTaskManager.getAllTasks().size());
         assertEquals(1, testFileBackedTaskManager.getAllSubTasks().size());
@@ -52,7 +53,7 @@ public class FileBackedTaskManagerTest {
         try {
             testLoadFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tasksForTest);
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            throw new ManagerSaveException("Error reading from file.", exception);
         }
         assertEquals(1, testLoadFileBackedTaskManager.getAllTasks().size());
         assertEquals(1, testLoadFileBackedTaskManager.getAllEpics().size());
@@ -61,7 +62,24 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void should() {
+    public void shouldReturnDoesNotThrowAfterCreateEmptyFile() throws IOException {
+        File emptyFile = File.createTempFile("empty", ".csv");
+        FileBackedTaskManager fileManager = new FileBackedTaskManager(emptyFile.toPath());
+        assertDoesNotThrow(() -> fileManager.save());
+    }
 
+    @Test
+    public void shouldReturnEmptyAfterLoadEmptyFile() throws IOException {
+        File emptyFile = File.createTempFile("empty", ".csv");
+        TaskManager testLoadFileBackedTaskManager;
+        try {
+            testLoadFileBackedTaskManager = FileBackedTaskManager.loadFromFile(emptyFile);
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Error reading from file.", exception);
+        }
+        assertEquals(0, testLoadFileBackedTaskManager.getAllTasks().size());
+        assertEquals(0, testLoadFileBackedTaskManager.getAllEpics().size());
+        assertEquals(0, testLoadFileBackedTaskManager.getAllSubTasks().size());
+        assertEquals(0, testLoadFileBackedTaskManager.getHistory().size());
     }
 }

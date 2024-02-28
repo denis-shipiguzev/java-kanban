@@ -122,7 +122,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return subtasks.get(taskId);
     }
 
-    private void save() {
+    public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile(), StandardCharsets.UTF_8))) {
             writer.write(HEADER);
             writer.newLine();
@@ -149,12 +149,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.toPath());
         try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
             List<String> lines = new ArrayList<>(reader.lines().toList());
+            if (lines.isEmpty()) {
+                return fileBackedTaskManager;
+            }
             boolean hasHEADER = lines.get(0).trim().equals(HEADER);
             if (hasHEADER) {
                 lines.remove(0);
-            }
-            if (lines.isEmpty()) {
-                return fileBackedTaskManager;
             }
 
             int lastString = lines.size() - 1;
