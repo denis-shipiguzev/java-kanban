@@ -117,8 +117,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             writer.newLine();
             writer.write(CSVTaskFormatter.historyToString(historyManager));
-        } catch (IOException e) {
-            throw new ManagerSaveException("Error writing to file.", e);
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Error writing to file.", exception);
         }
     }
 
@@ -161,7 +161,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     historyManager.add(fileBackedTaskManager.epics.get(id));
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException exception) {
             System.out.println("Error reading from file.");
         }
         return fileBackedTaskManager;
