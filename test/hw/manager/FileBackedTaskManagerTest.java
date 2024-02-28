@@ -15,9 +15,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class FileBackedTaskManagerTest {
-    TaskManager fileBackedTaskManager;
-    File tmpFile;
-    File tasksForTest;
+    private TaskManager fileBackedTaskManager;
+    private File tmpFile;
 
     @BeforeEach
     public void createFileBackTaskManager() throws IOException {
@@ -50,7 +49,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void shouldReturnTasksAndHistoryAfterLoading() {
-        tasksForTest = new File(String.valueOf(Path.of("src/main/resources/tasksForTest.csv")));
+        File tasksForTest = new File(String.valueOf(Path.of("src/main/resources/tasksForTest.csv")));
         TaskManager testLoadFileBackedTaskManager;
         try {
             testLoadFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tasksForTest);
