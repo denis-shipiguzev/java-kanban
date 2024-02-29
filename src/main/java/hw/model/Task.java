@@ -1,7 +1,7 @@
-package hw.model;
+package main.java.hw.model;
 
-import hw.model.enums.TaskStatus;
-import hw.model.enums.TaskType;
+import main.java.hw.model.enums.TaskStatus;
+import main.java.hw.model.enums.TaskType;
 
 import java.util.Objects;
 
@@ -35,12 +35,20 @@ public class Task {
         this.type = TaskType.TASK;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.description = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String taskDescription) {
-        this.description = taskDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getTaskId() {

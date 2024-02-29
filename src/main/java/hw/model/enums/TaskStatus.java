@@ -1,4 +1,4 @@
-package hw.model.enums;
+package main.java.hw.model.enums;
 
 public enum TaskStatus {
     NEW,

@@ -1,8 +1,11 @@
 package hw.manager.taskmanagers;
 
-import hw.model.Epic;
-import hw.model.Subtask;
-import hw.model.Task;
+import main.java.hw.managers.taskmanagers.InMemoryTaskManager;
+import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.model.Epic;
+import main.java.hw.model.Subtask;
+import main.java.hw.model.Task;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +19,15 @@ class InMemoryTaskManagerTest {
     private TaskManager taskManager;
 
     @BeforeEach
-    public void createTaskManager() {
+    void createTaskManager() {
         taskManager = new InMemoryTaskManager();
+    }
+
+    @AfterEach
+    void cleanup(){
+        taskManager.removeAllTasks();
+        taskManager.removeAllEpics();
+        taskManager.removeAllSubTasks();
     }
 
     @Test
@@ -105,8 +115,9 @@ class InMemoryTaskManagerTest {
         assertEquals(epicId, epic.getTaskId(), "Invalid identifier.");
         assertEquals(subtaskId, subtask.getTaskId(), "Invalid identifier.");
     }
+
     @Test
-    void shouldRemoveSubtaskFromEpicWhenDeleted(){
+    void shouldRemoveSubtaskFromEpicWhenDeleted() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
         taskManager.addEpic(epic);
         Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
@@ -115,8 +126,9 @@ class InMemoryTaskManagerTest {
         final List<Subtask> subtasks = taskManager.getSubTasksOfEpics(epic.getTaskId());
         assertEquals(0, subtasks.size(), "subtasks of epic is not empty.");
     }
+
     @Test
-    void shouldSetDescription(){
+    void shouldSetDescription() {
         Task task = new Task("Test addNewTask", "Test addNewTask description");
         final int taskId = taskManager.addTask(task);
         task.setDescription("Test edit NewTask description");

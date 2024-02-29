@@ -1,8 +1,7 @@
-package hw.manager.historymanagers;
+package main.java.hw.managers.historymanagers;
 
+import main.java.hw.model.Task;
 import java.util.List;
-
-import hw.model.Task;
 
 public interface HistoryManager {
     void add(Task task);

@@ -1,7 +1,7 @@
-package hw.model;
+package main.java.hw.model;
 
-import hw.model.enums.TaskStatus;
-import hw.model.enums.TaskType;
+import main.java.hw.model.enums.TaskStatus;
+import main.java.hw.model.enums.TaskType;
 
 public class Subtask extends Task {
     private final int parentTaskId;
@@ -9,7 +9,7 @@ public class Subtask extends Task {
     public Subtask(String name, String description, int parentTaskId) {
         super(name, description);
         this.status = TaskStatus.NEW;
-        this.type = TaskType.SUBTUSK;
+        this.type = TaskType.SUBTASK;
         this.parentTaskId = parentTaskId;
     }
 
@@ -17,7 +17,7 @@ public class Subtask extends Task {
         super(name, description);
         this.taskId = taskId;
         this.status = TaskStatus.NEW;
-        this.type = TaskType.SUBTUSK;
+        this.type = TaskType.SUBTASK;
         this.parentTaskId = parentTaskId;
     }
 
@@ -25,7 +25,7 @@ public class Subtask extends Task {
         super(name, description);
         this.taskId = taskId;
         this.status = status;
-        this.type = TaskType.SUBTUSK;
+        this.type = TaskType.SUBTASK;
         this.parentTaskId = parentTaskId;
     }
 

@@ -1,11 +1,11 @@
-package hw.manager.taskmanagers;
+package main.java.hw.managers.taskmanagers;
 
-import hw.model.Epic;
-import hw.model.Subtask;
-import hw.model.Task;
-import hw.model.enums.TaskStatus;
-import hw.manager.Managers;
-import hw.manager.historymanagers.HistoryManager;
+import main.java.hw.model.Epic;
+import main.java.hw.model.Subtask;
+import main.java.hw.model.Task;
+import main.java.hw.model.enums.TaskStatus;
+import main.java.hw.managers.Managers;
+import main.java.hw.managers.historymanagers.HistoryManager;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import java.util.Map;
 public class InMemoryTaskManager implements TaskManager {
 
     private int taskId = 0;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
     // 1. Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private int generateTaskId() {
         return ++taskId;

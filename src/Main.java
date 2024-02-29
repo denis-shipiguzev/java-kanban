@@ -1,9 +1,9 @@
-import hw.model.Epic;
-import hw.model.Subtask;
-import hw.model.Task;
-import hw.model.enums.TaskStatus;
-import hw.manager.Managers;
-import hw.manager.taskmanagers.TaskManager;
+import main.java.hw.model.Epic;
+import main.java.hw.model.Subtask;
+import main.java.hw.model.Task;
+import main.java.hw.managers.Managers;
+import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.model.enums.TaskStatus;
 
 public class Main {
 
@@ -51,6 +51,7 @@ public class Main {
         System.out.println(taskManager.getEpicByTaskId(3));
         System.out.println("---");
         System.out.println(taskManager.getSubTaskByTaskId(4));
+        System.out.println(taskManager.getSubTaskByTaskId(7));
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1", 3, TaskStatus.DONE);
         taskManager.updateSubTask(subtask1);
         subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2", 3, TaskStatus.DONE);
@@ -96,5 +97,7 @@ public class Main {
         for (Task task : taskManager.getHistory()) {
             System.out.println(task);
         }
+
+
     }
 }

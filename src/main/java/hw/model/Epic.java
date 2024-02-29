@@ -1,7 +1,7 @@
-package hw.model;
+package main.java.hw.model;
 
-import hw.model.enums.TaskStatus;
-import hw.model.enums.TaskType;
+import main.java.hw.model.enums.TaskStatus;
+import main.java.hw.model.enums.TaskType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,13 @@ public class Epic extends Task {
     public Epic(int taskId, String name, String description) {
         super(taskId, name, description);
         this.type = TaskType.EPIC;
+        this.childId = new ArrayList<>();
+    }
+
+    public Epic(int taskId, String name, String description, TaskStatus status) {
+        super(taskId, name, description);
+        this.type = TaskType.EPIC;
+        this.status = status;
         this.childId = new ArrayList<>();
     }
 
