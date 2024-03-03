@@ -15,25 +15,24 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class FileBackedTaskManagerTest {
-    protected TaskManager fileBackedTaskManager;
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     private File tmpFile;
 
     @BeforeEach
     public void createFileBackTaskManager() throws IOException {
         tmpFile = File.createTempFile("test", ".csv");
-        fileBackedTaskManager = new FileBackedTaskManager(tmpFile.toPath());
+        taskManager = new FileBackedTaskManager(tmpFile.toPath());
     }
 
     @Test
     public void shouldReturnTasksAndHistoryAfterCreating() {
         Task task = new Task("Task 1", "Test task 1");
-        fileBackedTaskManager.addTask(task);
+        taskManager.addTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        fileBackedTaskManager.addEpic(epic);
+        taskManager.addEpic(epic);
         Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
-        fileBackedTaskManager.addSubTask(subtask);
-        fileBackedTaskManager.getTaskByTaskId(1);
+        taskManager.addSubTask(subtask);
+        taskManager.getTaskByTaskId(1);
         TaskManager testFileBackedTaskManager;
         try {
             testFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tmpFile);
@@ -65,7 +64,7 @@ public class FileBackedTaskManagerTest {
     public void shouldReturnDoesNotThrowAfterCreateEmptyFile() throws IOException {
         File emptyFile = File.createTempFile("empty", ".csv");
         FileBackedTaskManager fileManager = new FileBackedTaskManager(emptyFile.toPath());
-        assertDoesNotThrow(() -> fileManager.save());
+        assertDoesNotThrow(fileManager::save);
     }
 
     @Test
