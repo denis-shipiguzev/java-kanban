@@ -5,7 +5,7 @@ import main.java.hw.model.Epic;
 import main.java.hw.model.Subtask;
 import main.java.hw.model.Task;
 import main.java.hw.model.enums.TaskType;
-import main.java.hw.managers.CSVTaskFormatter;
+import main.java.hw.managers.formatters.CSVTaskFormatter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final Path path;
