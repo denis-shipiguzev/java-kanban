@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -186,14 +187,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     // 3.a  Получение списка всех подзадач определённого эпика.
-    @Override
-    public List<Subtask> getSubTasksOfEpics(int taskId) {
-        List<Subtask> list = new ArrayList<>();
-        Epic epic = epics.get(taskId);
-        for (Integer taskid : epic.getSubTaskIds()) {
-            list.add(subtasks.get(taskid));
-        }
-        return list;
+
+    public List<Subtask> getEpicSubtasks(int taskId) {
+        return epics.get(taskId).getSubTaskIds()
+                .stream()
+                .map(subtasks::get)
+                .collect(Collectors.toList());
     }
 
     private void setStatusEpic(int parentId) {

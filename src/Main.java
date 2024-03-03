@@ -65,7 +65,7 @@ public class Main {
         taskManager.removeTaskById(2);
         System.out.println(taskManager.getAllTasks());
         System.out.println("---");
-        taskManager.getSubTasksOfEpics(3);
+        System.out.println(taskManager.getEpicSubtasks(3));
         taskManager.removeSubTaskById(4);
         taskManager.removeEpicById(3);
         System.out.println(taskManager.getAllEpics());
@@ -84,7 +84,8 @@ public class Main {
         for (Task epic : taskManager.getAllEpics()) {
             System.out.println(epic);
 
-            for (Task task : taskManager.getSubTasksOfEpics(epic.getTaskId())) {
+//            for (Task task : taskManager.getSubTasksOfEpics(epic.getTaskId())) {
+            for (Task task : taskManager.getEpicSubtasks(epic.getTaskId())) {
                 System.out.println("--> " + task);
             }
         }
@@ -97,7 +98,5 @@ public class Main {
         for (Task task : taskManager.getHistory()) {
             System.out.println(task);
         }
-
-
     }
 }

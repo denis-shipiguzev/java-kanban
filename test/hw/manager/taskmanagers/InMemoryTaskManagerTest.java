@@ -123,7 +123,7 @@ class InMemoryTaskManagerTest {
         Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
         taskManager.addSubTask(subtask);
         taskManager.removeSubTaskById(subtask.getTaskId());
-        final List<Subtask> subtasks = taskManager.getSubTasksOfEpics(epic.getTaskId());
+        final List<Subtask> subtasks = taskManager.getEpicSubtasks(epic.getTaskId());
         assertEquals(0, subtasks.size(), "subtasks of epic is not empty.");
     }
 
