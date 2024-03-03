@@ -19,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
 
-    private int generateTaskId() {
+    private int getNextId() {
         return ++taskId;
     }
 
@@ -85,8 +85,8 @@ public class InMemoryTaskManager implements TaskManager {
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
     @Override
     public int addTask(Task task) {
-        tasks.put(generateTaskId(), task);
-        task.setTaskId(taskId);
+        task.setTaskId(getNextId());
+        tasks.put(task.getTaskId(), task);
         return task.getTaskId();
     }
 
@@ -101,8 +101,8 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         if (!hasEqualsTaskId) {
-            epics.put(generateTaskId(), epic);
-            epic.setTaskId(taskId);
+            epic.setTaskId(getNextId());
+            epics.put(epic.getTaskId(), epic);
         }
         return epic.getTaskId();
     }
@@ -112,9 +112,9 @@ public class InMemoryTaskManager implements TaskManager {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
-            subtasks.put(generateTaskId(), subtask);
+            subtask.setTaskId(getNextId());
+            subtasks.put(subtask.getTaskId(), subtask);
             epics.get(parentId).addSubtaskId(taskId);
-            subtask.setTaskId(taskId);
             setStatusEpic(parentId);
         }
         return subtask.getTaskId();
@@ -171,6 +171,7 @@ public class InMemoryTaskManager implements TaskManager {
             setStatusEpic(parentId);
         }
         subtasks.remove(taskId);
+        historyManager.remove(taskId);
     }
 
     @Override
