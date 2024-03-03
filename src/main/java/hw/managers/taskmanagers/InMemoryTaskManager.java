@@ -7,10 +7,7 @@ import main.java.hw.model.enums.TaskStatus;
 import main.java.hw.managers.Managers;
 import main.java.hw.managers.historymanagers.HistoryManager;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -174,16 +171,13 @@ public class InMemoryTaskManager implements TaskManager {
             setStatusEpic(parentId);
         }
         subtasks.remove(taskId);
-        historyManager.remove(taskId);
     }
 
     @Override
     public void removeEpicById(int taskId) {
-        List<Integer> ids = epics.remove(taskId).getSubTaskIds();
         historyManager.remove(taskId);
-        for (int id : ids) {
-            subtasks.remove(id);
-        }
+        epics.remove(taskId).getSubTaskIds()
+                .forEach(subtasks::remove);
     }
 
     // 3.a  Получение списка всех подзадач определённого эпика.
