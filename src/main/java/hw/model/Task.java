@@ -3,6 +3,8 @@ package main.java.hw.model;
 import main.java.hw.model.enums.TaskStatus;
 import main.java.hw.model.enums.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -11,6 +13,8 @@ public class Task {
     protected String description;
     protected TaskStatus status;
     protected TaskType type;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
     public Task(String name, String description) {
         this.name = name;
@@ -69,6 +73,9 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+    public LocalDateTime getEndTime(){
+        return startTime.plus(duration);
     }
 
     @Override

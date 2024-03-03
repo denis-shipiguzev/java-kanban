@@ -3,6 +3,7 @@ package main.java.hw.model;
 import main.java.hw.model.enums.TaskStatus;
 import main.java.hw.model.enums.TaskType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,10 @@ public class Epic extends Task {
 
     public void removeSubtaskId(int id) {
         childId.remove((Integer) id);
+    }
+    @Override
+    public LocalDateTime getEndTime(){
+        return null;
     }
 
     @Override
