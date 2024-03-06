@@ -27,7 +27,7 @@ public class Epic extends Task {
         this.endTime = null;
     }
 
-    public Epic(int taskId, String name, String description, ArrayList<Integer> childId) {
+    public Epic(int taskId, String name, String description, List<Integer> childId) {
         super(taskId, name, description);
         this.type = TaskType.EPIC;
         this.childId = childId;
