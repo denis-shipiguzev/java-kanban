@@ -120,7 +120,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addSubTask(subtask);
         taskManager.removeSubTaskById(subtask.getTaskId());
         final List<Subtask> subtasks = taskManager.getEpicSubtasks(epic.getTaskId());
-        assertEquals(0, subtasks.size(), "subtasks of epic is not empty.");
+        assertTrue(subtasks.isEmpty(),"subtasks of epic is not empty.");
     }
 
     @Test
