@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     private File tmpFile;
@@ -26,11 +28,13 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @Test
     public void shouldReturnTasksAndHistoryAfterCreating() {
-        Task task = new Task("Task 1", "Test task 1");
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         taskManager.addTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
         taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
+        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
         taskManager.addSubTask(subtask);
         taskManager.getTaskByTaskId(1);
         TaskManager testFileBackedTaskManager;

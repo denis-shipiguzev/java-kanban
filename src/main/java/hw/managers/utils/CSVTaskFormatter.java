@@ -1,4 +1,4 @@
-package main.java.hw.managers.formatters;
+package main.java.hw.managers.utils;
 
 import main.java.hw.managers.historymanagers.HistoryManager;
 import main.java.hw.model.Epic;
@@ -7,6 +7,8 @@ import main.java.hw.model.Task;
 import main.java.hw.model.enums.TaskStatus;
 import main.java.hw.model.enums.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,10 @@ public class CSVTaskFormatter {
         if (task.getType() == TaskType.SUBTASK) {
             sb.append(((Subtask) task).getParentTaskId());
         }
+        sb.append(DELIMITER);
+        sb.append(task.getStartTime()).append(DELIMITER);
+        sb.append(task.getDuration()).append(DELIMITER);
+        sb.append(task.getEndTime());
         return sb.toString();
     }
 
@@ -37,15 +43,17 @@ public class CSVTaskFormatter {
         if (type.equals(TaskType.SUBTASK)) {
             epicId = Integer.parseInt(values[5]);
         }
+        LocalDateTime startTime = LocalDateTime.parse(values[6]);
+        Duration duration = Duration.parse(values[7]);
         switch (type) {
             case EPIC -> {
-                return new Epic(taskId, name, description, status);
+                return new Epic(taskId, name, description, status, startTime, duration);
             }
             case SUBTASK -> {
-                return new Subtask(taskId, name, description, epicId, status);
+                return new Subtask(taskId, name, description, epicId, status, startTime, duration);
             }
             default -> {
-                return new Task(taskId, name, description, status);
+                return new Task(taskId, name, description, status, startTime, duration);
             }
         }
     }

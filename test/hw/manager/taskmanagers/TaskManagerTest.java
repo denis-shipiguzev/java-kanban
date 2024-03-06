@@ -6,6 +6,8 @@ import main.java.hw.model.Subtask;
 import main.java.hw.model.Task;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void addNewTask() {
-        Task task = new Task("Test addNewTask", "Test addNewTask description");
+        Task task = new Task("Test addNewTask", "Test addNewTask description",LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
 
         final Task savedTask = taskManager.getTaskByTaskId(taskId);
@@ -37,7 +39,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
      */
     @Test
     void shouldTaskSameTask() {
-        Task task = new Task("Task", "Test task 1");
+        Task task = new Task("Task", "Test task 1",
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
         final Task savedTask = taskManager.getTaskByTaskId(taskId);
         assertEquals(task, savedTask, "Tasks are not equal.");
@@ -58,7 +61,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldSubtaskSameSubtask() {
         Epic epic = new Epic("Epic", "Test epic 1");
         taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Subtask", "Test subtask 1", epic.getTaskId());
+        Subtask subtask = new Subtask("Subtask", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int subtaskId = taskManager.addSubTask(subtask);
         final Subtask savedSubtask = taskManager.getSubTaskByTaskId(subtaskId);
         assertEquals(subtask, savedSubtask, "Subtasks are not equal.");
@@ -80,7 +84,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     */
     @Test
     void shouldSubtaskNotSameEpic() {
-        Subtask subtask = new Subtask(1, "Subtask 1", "Test subtask 1", 1);
+        Subtask subtask = new Subtask(1, "Subtask 1", "Test subtask 1", 1,
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         taskManager.addSubTask(subtask);
         assertNotEquals(subtask, taskManager.getSubTaskByTaskId(1), "Subtask created.");
     }
@@ -90,11 +95,12 @@ abstract class TaskManagerTest<T extends TaskManager> {
      */
     @Test
     void shouldAddTaskAndFind() {
-        Task task = new Task("Task 1", "Test task 1");
+        Task task = new Task("Task 1", "Test task 1",LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
         final int epicId = taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
+        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
         final int subtaskId = taskManager.addSubTask(subtask);
         assertEquals(taskId, task.getTaskId(), "Invalid identifier.");
         assertEquals(epicId, epic.getTaskId(), "Invalid identifier.");
@@ -105,7 +111,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldRemoveSubtaskFromEpicWhenDeleted() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
         taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
+        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         taskManager.addSubTask(subtask);
         taskManager.removeSubTaskById(subtask.getTaskId());
         final List<Subtask> subtasks = taskManager.getEpicSubtasks(epic.getTaskId());
@@ -114,7 +120,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void shouldSetDescription() {
-        Task task = new Task("Test addNewTask", "Test addNewTask description");
+        Task task = new Task("Test addNewTask", "Test addNewTask description",LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
         task.setDescription("Test edit NewTask description");
         final Task savedTask = taskManager.getTaskByTaskId(taskId);

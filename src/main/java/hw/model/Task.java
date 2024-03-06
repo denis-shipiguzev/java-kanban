@@ -31,20 +31,37 @@ public class Task {
         this.type = TaskType.TASK;
     }
 
-    public Task(int taskId, String name, String description, TaskStatus status) {
+    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = TaskStatus.NEW;
+        this.type = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public Task(int taskId, String name, String description, LocalDateTime startTime, Duration duration) {
+        this.taskId = taskId;
+        this.name = name;
+        this.description = description;
+        this.status = TaskStatus.NEW;
+        this.type = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public Task(int taskId, String name, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
         this.status = status;
         this.type = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.description = name;
     }
 
     public String getDescription() {
@@ -74,8 +91,29 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
-    public LocalDateTime getEndTime(){
-        return startTime.plus(duration);
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null) {
+            return null;
+        } else {
+            return startTime.plus(duration);
+        }
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public Duration getDuration() {
+        return duration;
     }
 
     @Override
@@ -85,7 +123,8 @@ public class Task {
                 ", Type='" + type + '\'' +
                 ", Name='" + name + '\'' +
                 ", Description='" + description + '\'' +
-                ", status='" + status + '\'' + '}';
+                ", status='" + status + '\'' +
+                '}';
     }
 
     @Override
