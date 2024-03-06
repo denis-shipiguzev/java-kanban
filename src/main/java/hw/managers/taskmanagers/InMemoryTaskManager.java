@@ -259,7 +259,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public boolean checkIntersectionTasks(Task task) {
+    private boolean checkIntersectionTasks(Task task) {
         Optional<Task> check = getPrioritizedTasks().stream()
                 .filter(t -> {
                     LocalDateTime startTime = t.getStartTime();
