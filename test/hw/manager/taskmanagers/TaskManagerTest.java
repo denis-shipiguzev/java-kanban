@@ -1,11 +1,16 @@
 package hw.manager.taskmanagers;
 
+import main.java.hw.managers.taskmanagers.FileBackedTaskManager;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Epic;
 import main.java.hw.model.Subtask;
 import main.java.hw.model.Task;
+import main.java.hw.model.enums.TaskStatus;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +24,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void addNewTask() {
-        Task task = new Task("Test addNewTask", "Test addNewTask description",LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        Task task = new Task("Test addNewTask", "Test addNewTask description", LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
 
         final Task savedTask = taskManager.getTaskByTaskId(taskId);
@@ -95,7 +100,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
      */
     @Test
     void shouldAddTaskAndFind() {
-        Task task = new Task("Task 1", "Test task 1",LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        Task task = new Task("Task 1", "Test task 1", LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
         final int epicId = taskManager.addEpic(epic);
@@ -111,7 +116,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldRemoveSubtaskFromEpicWhenDeleted() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
         taskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         taskManager.addSubTask(subtask);
         taskManager.removeSubTaskById(subtask.getTaskId());
         final List<Subtask> subtasks = taskManager.getEpicSubtasks(epic.getTaskId());
@@ -120,10 +125,106 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void shouldSetDescription() {
-        Task task = new Task("Test addNewTask", "Test addNewTask description",LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        Task task = new Task("Test addNewTask", "Test addNewTask description", LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
         final int taskId = taskManager.addTask(task);
         task.setDescription("Test edit NewTask description");
         final Task savedTask = taskManager.getTaskByTaskId(taskId);
         assertEquals(task, savedTask, "Cannot set task description.");
+    }
+
+    /*
+    Для расчёта статуса Epic. Граничные условия: a. Все подзадачи со статусом NEW.
+     */
+    @Test
+    void shouldReturnStatusNEWforEpicNEWsubtasks() {
+        Epic epic = new Epic("Epic 1", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask1);
+        Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask2);
+        assertEquals(epic.getStatus(), TaskStatus.NEW, "Epic status not NEW");
+    }
+
+    /*
+    Для расчёта статуса Epic Все подзадачи со статусом DONE.
+     */
+    @Test
+    void shouldReturnStatusDONEforEpicDONEsubtasks() {
+        Epic epic = new Epic("Epic 1", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask1);
+        Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask2);
+        subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
+                1, TaskStatus.DONE,
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateSubTask(subtask1);
+        subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2",
+                1, TaskStatus.DONE,
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateSubTask(subtask2);
+        assertEquals(epic.getStatus(), TaskStatus.DONE, "Epic status not DONE");
+    }
+
+    /*
+    Подзадачи со статусами NEW и DONE
+    */
+    @Test
+    void shouldReturnStatusIN_PROGRESSforEpicsNEWDONESubtasks() {
+        Epic epic = new Epic("Epic 1", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask1);
+        Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask2);
+        subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
+                1, TaskStatus.NEW,
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateSubTask(subtask1);
+        subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2",
+                1, TaskStatus.DONE,
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateSubTask(subtask2);
+        assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Epic status not IN_PROGRESS");
+    }
+
+    /*
+    Подзадачи со статусом IN_PROGRESS.
+    */
+    @Test
+    void shouldReturnStatusIN_PROGRESSforEpicsIN_PROGRESSSubtasks() {
+        Epic epic = new Epic("Epic 1", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask1);
+        Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask2);
+        subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
+                1, TaskStatus.IN_PROGRESS,
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateSubTask(subtask1);
+        subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2",
+                1, TaskStatus.IN_PROGRESS,
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateSubTask(subtask2);
+        assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Epic status not IN_PROGRESS");
+    }
+
+    @Test
+    public void shouldReturnThrowAfterIntersectionTasks() {
+        Epic epic = new Epic("Epic 1", "Test epic 1");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask1);
+        Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        assertThrows(IllegalStateException.class, () -> taskManager.addSubTask(subtask2));
     }
 }

@@ -135,8 +135,8 @@ public class InMemoryTaskManager implements TaskManager {
     // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     @Override
     public int updateTask(Task task) {
+        prioritizedTasks.remove(tasks.get(task.getTaskId()));
         if (checkIntersectionTasks(task)) {
-            prioritizedTasks.remove(tasks.get(task.getTaskId()));
             tasks.put(task.getTaskId(), task);
             prioritizedTasks.add(task);
         }
@@ -165,9 +165,9 @@ public class InMemoryTaskManager implements TaskManager {
     public int updateSubTask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
-        if (checkIntersectionTasks(subtask)) {
-            if (hasParentTaskId) {
-                prioritizedTasks.remove(subtasks.get(subtask.getTaskId()));
+        if (hasParentTaskId) {
+            prioritizedTasks.remove(subtasks.get(subtask.getTaskId()));
+            if (checkIntersectionTasks(subtask)) {
                 subtasks.put(subtask.getTaskId(), subtask);
                 setStatusEpic(parentId);
                 setEndTimeEpic(parentId);
