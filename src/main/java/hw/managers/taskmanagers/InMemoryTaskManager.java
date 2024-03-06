@@ -246,12 +246,12 @@ public class InMemoryTaskManager implements TaskManager {
         if (!ids.isEmpty()) {
             LocalDateTime minStartDate = ids.stream()
                     .map(Subtask::getStartTime)
-                    .max(LocalDateTime::compareTo)
-                    .get();
+                    .min(LocalDateTime::compareTo)
+                    .orElseThrow(NoSuchElementException::new);
             LocalDateTime maxEndDate = ids.stream()
                     .map(Subtask::getEndTime)
                     .max(LocalDateTime::compareTo)
-                    .get();
+                    .orElseThrow(NoSuchElementException::new);
             Duration duration = Duration.between(minStartDate, maxEndDate);
             epics.get(parentId).setStartTime(minStartDate);
             epics.get(parentId).setEndTime(maxEndDate);
@@ -260,7 +260,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean checkIntersectionTasks(Task task) {
-        Optional<Task> check = getPrioritizedTasks().stream()
+        getPrioritizedTasks().stream()
                 .filter(t -> {
                     LocalDateTime startTime = t.getStartTime();
                     LocalDateTime endTime = t.getEndTime();
@@ -273,10 +273,12 @@ public class InMemoryTaskManager implements TaskManager {
                     );
 
                 })
-                .findAny();
-        if (check.isPresent()) {
-            throw new IllegalStateException("Задачи не должны пересекаться по времени выполнения");
-        } else return true;
+                .findAny()
+                .ifPresent(task1 -> {
+                    throw new IllegalStateException("Задачи не должны пересекаться по времени выполнения");
+                });
+
+        return true;
     }
 
     @Override
