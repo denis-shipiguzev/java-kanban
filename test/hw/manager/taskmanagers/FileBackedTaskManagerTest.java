@@ -1,4 +1,4 @@
-package hw.manager;
+package hw.manager.taskmanagers;
 
 import main.java.hw.exceptions.ManagerSaveException;
 import main.java.hw.managers.taskmanagers.FileBackedTaskManager;
@@ -14,26 +14,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-public class FileBackedTaskManagerTest {
-    protected TaskManager fileBackedTaskManager;
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     private File tmpFile;
 
     @BeforeEach
     public void createFileBackTaskManager() throws IOException {
         tmpFile = File.createTempFile("test", ".csv");
-        fileBackedTaskManager = new FileBackedTaskManager(tmpFile.toPath());
+        taskManager = new FileBackedTaskManager(tmpFile.toPath());
     }
 
     @Test
     public void shouldReturnTasksAndHistoryAfterCreating() {
-        Task task = new Task("Task 1", "Test task 1");
-        fileBackedTaskManager.addTask(task);
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+        taskManager.addTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        fileBackedTaskManager.addEpic(epic);
-        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId());
-        fileBackedTaskManager.addSubTask(subtask);
-        fileBackedTaskManager.getTaskByTaskId(1);
+        taskManager.addEpic(epic);
+        Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
+                LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
+        taskManager.addSubTask(subtask);
+        taskManager.getTaskByTaskId(1);
         TaskManager testFileBackedTaskManager;
         try {
             testFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tmpFile);
@@ -65,7 +68,7 @@ public class FileBackedTaskManagerTest {
     public void shouldReturnDoesNotThrowAfterCreateEmptyFile() throws IOException {
         File emptyFile = File.createTempFile("empty", ".csv");
         FileBackedTaskManager fileManager = new FileBackedTaskManager(emptyFile.toPath());
-        assertDoesNotThrow(() -> fileManager.save());
+        assertDoesNotThrow(fileManager::save);
     }
 
     @Test

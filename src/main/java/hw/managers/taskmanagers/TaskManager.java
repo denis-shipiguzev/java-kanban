@@ -5,6 +5,7 @@ import main.java.hw.model.Subtask;
 import main.java.hw.model.Task;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
@@ -51,7 +52,10 @@ public interface TaskManager {
     void removeEpicById(int taskId);
 
     // 3.a  Получение списка всех подзадач определённого эпика.
-    List<Subtask> getSubTasksOfEpics(int taskId);
+    List<Subtask> getEpicSubtasks(int taskId);
 
     List<Task> getHistory();
+
+    Set<Task> getPrioritizedTasks();
+
 }

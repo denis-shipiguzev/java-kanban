@@ -5,7 +5,7 @@ import main.java.hw.model.Epic;
 import main.java.hw.model.Subtask;
 import main.java.hw.model.Task;
 import main.java.hw.model.enums.TaskType;
-import main.java.hw.managers.CSVTaskFormatter;
+import main.java.hw.managers.utils.CSVTaskFormatter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final Path path;
-    private static final String HEADER = "id,type,name,status,description,epic";
+    private static final String HEADER = "id,type,name,status,description,epic,startTime,duration,endTime";
     private static final CSVTaskFormatter csvTaskFormatter = new CSVTaskFormatter();
 
     public FileBackedTaskManager(Path path) {
