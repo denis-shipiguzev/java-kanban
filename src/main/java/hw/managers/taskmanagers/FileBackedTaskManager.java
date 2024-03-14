@@ -24,8 +24,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addTask(Task task) {
-        super.addTask(task);
+    public int createTask(Task task) {
+        super.createTask(task);
         save();
         return task.getTaskId();
     }
@@ -38,34 +38,34 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeTaskById(int taskId) {
-        super.removeTaskById(taskId);
+    public void deleteTaskById(int taskId) {
+        super.deleteTaskById(taskId);
         save();
     }
 
     @Override
-    public int addSubTask(Subtask subtask) {
-        super.addSubTask(subtask);
-        save();
-        return subtask.getTaskId();
-    }
-
-    @Override
-    public int updateSubTask(Subtask subtask) {
-        super.updateSubTask(subtask);
+    public int createSubtask(Subtask subtask) {
+        super.createSubtask(subtask);
         save();
         return subtask.getTaskId();
     }
 
     @Override
-    public void removeSubTaskById(int taskId) {
-        super.removeSubTaskById(taskId);
+    public int updateSubtask(Subtask subtask) {
+        super.updateSubtask(subtask);
+        save();
+        return subtask.getTaskId();
+    }
+
+    @Override
+    public void deleteSubtaskById(int taskId) {
+        super.deleteSubtaskById(taskId);
         save();
     }
 
     @Override
-    public int addEpic(Epic epic) {
-        super.addEpic(epic);
+    public int createEpic(Epic epic) {
+        super.createEpic(epic);
         save();
         return epic.getTaskId();
     }
@@ -78,46 +78,46 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeEpicById(int taskId) {
-        super.removeEpicById(taskId);
+    public void deleteEpicById(int taskId) {
+        super.deleteEpicById(taskId);
         save();
     }
 
     @Override
-    public void removeAllTasks() {
-        super.removeAllTasks();
+    public void deleteTasks() {
+        super.deleteTasks();
         save();
     }
 
     @Override
-    public void removeAllEpics() {
-        super.removeAllEpics();
+    public void deleteEpics() {
+        super.deleteEpics();
         save();
     }
 
     @Override
-    public void removeAllSubTasks() {
-        super.removeAllSubTasks();
+    public void deleteSubtasks() {
+        super.deleteSubtasks();
         save();
     }
 
     @Override
-    public Task getTaskByTaskId(int taskId) {
-        super.getTaskByTaskId(taskId);
+    public Task getTaskById(int taskId) {
+        super.getTaskById(taskId);
         save();
         return tasks.get(taskId);
     }
 
     @Override
-    public Epic getEpicByTaskId(int taskId) {
-        super.getEpicByTaskId(taskId);
+    public Epic getEpicById(int taskId) {
+        super.getEpicById(taskId);
         save();
         return epics.get(taskId);
     }
 
     @Override
-    public Subtask getSubTaskByTaskId(int taskId) {
-        super.getSubTaskByTaskId(taskId);
+    public Subtask getSubtaskById(int taskId) {
+        super.getSubtaskById(taskId);
         save();
         return subtasks.get(taskId);
     }
@@ -152,9 +152,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             if (lines.isEmpty()) {
                 return fileBackedTaskManager;
             }
-            boolean hasHEADER = lines.get(0).trim().equals(HEADER);
+            boolean hasHEADER = lines.getFirst().trim().equals(HEADER);
             if (hasHEADER) {
-                lines.remove(0);
+                lines.removeFirst();
             }
 
             int lastString = lines.size() - 1;

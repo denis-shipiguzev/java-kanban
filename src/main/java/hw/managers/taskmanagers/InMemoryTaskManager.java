@@ -30,34 +30,34 @@ public class InMemoryTaskManager implements TaskManager {
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
     @Override
-    public ArrayList<Task> getAllTasks() {
+    public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
     @Override
-    public ArrayList<Epic> getAllEpics() {
+    public ArrayList<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubTasks() {
+    public ArrayList<Subtask> getSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
     // 2.b  Удаление всех задач.
     @Override
-    public void removeAllTasks() {
+    public void deleteTasks() {
         tasks.clear();
     }
 
     @Override
-    public void removeAllEpics() {
+    public void deleteEpics() {
         subtasks.clear();
         epics.clear();
     }
 
     @Override
-    public void removeAllSubTasks() {
+    public void deleteSubtasks() {
         for (Subtask subtask : subtasks.values()) {
             int parentId = subtask.getParentTaskId();
             int taskId = subtask.getTaskId();
@@ -70,26 +70,26 @@ public class InMemoryTaskManager implements TaskManager {
 
     // 2.c  Получение по идентификатору.
     @Override
-    public Task getTaskByTaskId(int taskId) {
+    public Task getTaskById(int taskId) {
         historyManager.add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
     @Override
-    public Epic getEpicByTaskId(int taskId) {
+    public Epic getEpicById(int taskId) {
         historyManager.add(epics.get(taskId));
         return epics.get(taskId);
     }
 
     @Override
-    public Subtask getSubTaskByTaskId(int taskId) {
+    public Subtask getSubtaskById(int taskId) {
         historyManager.add(subtasks.get(taskId));
         return subtasks.get(taskId);
     }
 
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
     @Override
-    public int addTask(Task task) {
+    public int createTask(Task task) {
         if (checkIntersectionTasks(task)) {
             task.setTaskId(getNextId());
             tasks.put(task.getTaskId(), task);
@@ -99,7 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addEpic(Epic epic) {
+    public int createEpic(Epic epic) {
         List<Integer> ids = epic.getSubTaskIds();
         boolean hasEqualsTaskId = false;
         for (int id : ids) {
@@ -116,7 +116,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addSubTask(Subtask subtask) {
+    public int createSubtask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (checkIntersectionTasks(subtask)) {
@@ -162,7 +162,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int updateSubTask(Subtask subtask) {
+    public int updateSubtask(Subtask subtask) {
         int parentId = subtask.getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
@@ -179,14 +179,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     // 2.f Удаление по идентификатору.
     @Override
-    public void removeTaskById(int taskId) {
+    public void deleteTaskById(int taskId) {
         prioritizedTasks.remove(tasks.get(taskId));
         tasks.remove(taskId);
         historyManager.remove(taskId);
     }
 
     @Override
-    public void removeSubTaskById(int taskId) {
+    public void deleteSubtaskById(int taskId) {
         int parentId = subtasks.get(taskId).getParentTaskId();
         boolean hasParentTaskId = epics.containsKey(parentId);
         if (hasParentTaskId) {
@@ -200,7 +200,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeEpicById(int taskId) {
+    public void deleteEpicById(int taskId) {
         List<Integer> ids = epics.get(taskId).getSubTaskIds();
         historyManager.remove(taskId);
         for (int id : ids) {
