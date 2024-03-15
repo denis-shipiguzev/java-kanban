@@ -6,6 +6,7 @@ import main.java.hw.model.Task;
 import main.java.hw.model.enums.TaskStatus;
 import main.java.hw.managers.Managers;
 import main.java.hw.managers.historymanagers.HistoryManager;
+import main.java.hw.model.enums.TaskType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

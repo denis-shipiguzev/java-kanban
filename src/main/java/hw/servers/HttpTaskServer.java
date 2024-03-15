@@ -1,40 +1,54 @@
 package main.java.hw.servers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
+import main.java.hw.managers.Managers;
+import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.servers.adapters.DurationTypeAdapter;
+import main.java.hw.servers.adapters.LocalDateTimeAdapter;
 import main.java.hw.servers.handlers.TasksHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class HttpTaskServer {
-    public static final int PORT = 8080;
-    private final HttpServer server;
+    private static final int PORT = 8080;
+    protected static TaskManager taskManager = Managers.getDefault();
 
-    public HttpTaskServer(HttpServer server) {
-        this.server = server;
+    public HttpTaskServer() {
     }
 
     public static void main(String[] args) {
-
-    }
-
-    void start() {
         try {
-            server.create(new InetSocketAddress(PORT), 0);
+            start();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        server.createContext("/tasks", new TasksHandler());
+    }
+
+    public static void start() throws IOException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .serializeNulls()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
+                .create();
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        server.createContext("/tasks", new TasksHandler(taskManager,gson));
 /*        server.createContext("/subtasks", new SubTasksHandler());
         server.createContext("/epics", new EpicsHandler());
         server.createContext("/history", new HistoryHandler());
         server.createContext("/prioritized", new PrioritozedHandler());
  */
         server.start();
-        System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
+        System.out.println("HTTP-server started port: " + PORT);
     }
 
-    void stop() {
+    private static void stop(HttpServer server) {
         server.stop(0);
+        System.out.println("HTTP-server stopped port: " + PORT);
     }
 }

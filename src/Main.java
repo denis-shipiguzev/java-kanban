@@ -54,12 +54,12 @@ public class Main {
         */
         System.out.println("---");
         task1 = new Task(task1.getTaskId(), "Task 1", "Test task 1", TaskStatus.IN_PROGRESS,
-                LocalDateTime.of(2024, 3, 5, 17, 0, 0), Duration.ofMinutes(30));
+                LocalDateTime.of(2024, 3, 7, 17, 0, 0), Duration.ofMinutes(30));
         taskManager.updateTask(task1);
         System.out.println(taskManager.getTaskById(1));
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
                 3, TaskStatus.IN_PROGRESS,
-                LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+                LocalDateTime.of(2024, 3, 8, 15, 0, 0), Duration.ofMinutes(30));
         taskManager.updateSubtask(subtask1);
         System.out.println("---");
         System.out.println(taskManager.getEpicById(3));
@@ -67,7 +67,7 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(4));
         System.out.println(taskManager.getSubtaskById(7));
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1", 3,
-                TaskStatus.DONE, LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
+                TaskStatus.DONE, LocalDateTime.of(2024, 3, 9, 15, 0, 0), Duration.ofMinutes(30));
         taskManager.updateSubtask(subtask1);
         subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2", 3,
                 TaskStatus.DONE, LocalDateTime.of(2024, 3, 6, 18, 0, 0), Duration.ofMinutes(30));
