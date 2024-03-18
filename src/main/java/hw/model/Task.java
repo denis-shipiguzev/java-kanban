@@ -87,6 +87,9 @@ public class Task {
     public TaskType getType() {
         return type;
     }
+    public void setType(TaskType type) {
+        this.type = type;
+    }
 
     public void setStatus(TaskStatus status) {
         this.status = status;

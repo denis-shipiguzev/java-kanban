@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import main.java.hw.managers.Managers;
 import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.model.Task;
 import main.java.hw.servers.adapters.DurationTypeAdapter;
 import main.java.hw.servers.adapters.LocalDateTimeAdapter;
+import main.java.hw.servers.adapters.TaskAdapter;
 import main.java.hw.servers.handlers.TasksHandler;
 
 import java.io.IOException;
@@ -32,9 +34,10 @@ public class HttpTaskServer {
     public static void start() throws IOException {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
-                .serializeNulls()
+//                .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
+                .registerTypeAdapter(Task.class, new TaskAdapter())
                 .create();
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/tasks", new TasksHandler(taskManager,gson));

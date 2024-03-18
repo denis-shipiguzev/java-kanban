@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.google.gson.*;
 import main.java.hw.managers.taskmanagers.TaskManager;
@@ -61,12 +60,12 @@ public class TasksHandler implements HttpHandler {
             if (requestMethod.equals("POST")) {
                 return Endpoint.POST_TASK;
             }
+            if (requestMethod.equals("DELETE")) {
+                return Endpoint.DELETE_TASK;
+            }
         } else if (pathParts.length == 3 && pathParts[1].equals("tasks")) {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET_TASKBYID;
-            }
-            if (requestMethod.equals("DELETE")) {
-                return Endpoint.DELETE_TASK;
             }
         }
         return Endpoint.UNKNOWN;
@@ -89,35 +88,52 @@ public class TasksHandler implements HttpHandler {
     }
     void handleGetTaskById(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
-        Optional<Integer> postIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
-        int postId = postIdOpt.get();
-        Task task = taskManager.getTaskById(postId);
-        writeResponse(exchange, gson.toJson(task, Task.class), 200);
-
-
-//        writeResponse(exchange, "Пост с идентификатором " + postId + " не найден", 404);
+        Optional<Integer> taskIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
+        int taskId = taskIdOpt.get();
+        Task task = taskManager.getTaskById(taskId);
+        if (task != null) {
+            writeResponse(exchange, gson.toJson(task, Task.class), 200);
+        } else {
+            writeResponse(exchange, "Пост с идентификатором " + taskId + " не найден", 404);
+        }
     }
+
     void handlePostTask(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
         Task task = gson.fromJson(body, Task.class);
         boolean isExists = taskManager.getTasks().stream()
-                .map(Task::getTaskId)
-                .anyMatch(n ->n == task.getTaskId());
+                .anyMatch(existingTask -> existingTask.getTaskId() == task.getTaskId());
         if (!isExists) {
             taskManager.createTask(task);
             writeResponse(exchange, "Добавление успешно", 200);
         } else {
-            taskManager.updateTask(task);
-            writeResponse(exchange, "Изменение успешно", 200);
+                taskManager.updateTask(task);
+                writeResponse(exchange, "Изменение успешно", 200);
         }
     }
+
     void handleDeleteTask(HttpExchange exchange) throws IOException {
-        String[] pathParts = exchange.getRequestURI().getPath().split("/");
-        Optional<Integer> postIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
-        int postId = postIdOpt.get();
-        taskManager.deleteTaskById(postId);
-        writeResponse(exchange, "Удаление успешно", 200);
+        String query = exchange.getRequestURI().getQuery();
+        String[] queryParams = query.split("&");
+        int taskId = -1;
+        for (String param : queryParams) {
+            String[] keyValue = param.split("=");
+            if (keyValue.length == 2 && keyValue[0].equals("id")) {
+                try {
+                    taskId = Integer.parseInt(keyValue[1]);
+                    break;
+                } catch (NumberFormatException e) {
+                }
+            }
+        }
+
+        if (taskId != -1) {
+            taskManager.deleteTaskById(taskId);
+            writeResponse(exchange, "Удаление успешно", 200);
+        } else {
+            writeResponse(exchange, "Некорректный идентификатор задачи", 400);
+        }
     }
 
     enum Endpoint {GET_TASKS, GET_TASKBYID, POST_TASK, DELETE_TASK, UNKNOWN}
