@@ -34,7 +34,6 @@ public class HttpTaskServer {
     public static void start() throws IOException {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
-//                .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
                 .registerTypeAdapter(Task.class, new TaskAdapter())
@@ -44,7 +43,7 @@ public class HttpTaskServer {
 /*        server.createContext("/subtasks", new SubTasksHandler());
         server.createContext("/epics", new EpicsHandler());
         server.createContext("/history", new HistoryHandler());
-        server.createContext("/prioritized", new PrioritozedHandler());
+        server.createContext("/prioritized", new PrioritizedHandler());
  */
         server.start();
         System.out.println("HTTP-server started port: " + PORT);

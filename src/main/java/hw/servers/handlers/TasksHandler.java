@@ -13,6 +13,9 @@ import java.util.Optional;
 import com.google.gson.*;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Task;
+import main.java.hw.servers.handlers.enums.Endpoint;
+
+import static main.java.hw.servers.handlers.EndpointResolver.getEndpoint;
 
 public class TasksHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -50,27 +53,6 @@ public class TasksHandler implements HttpHandler {
         }
     }
 
-    private Endpoint getEndpoint(String requestPath, String requestMethod) {
-        String[] pathParts = requestPath.split("/");
-
-        if (pathParts.length == 2 & pathParts[1].equals("tasks")) {
-            if (requestMethod.equals("GET")) {
-                return Endpoint.GET_TASKS;
-            }
-            if (requestMethod.equals("POST")) {
-                return Endpoint.POST_TASK;
-            }
-            if (requestMethod.equals("DELETE")) {
-                return Endpoint.DELETE_TASK;
-            }
-        } else if (pathParts.length == 3 && pathParts[1].equals("tasks")) {
-            if (requestMethod.equals("GET")) {
-                return Endpoint.GET_TASKBYID;
-            }
-        }
-        return Endpoint.UNKNOWN;
-    }
-
     private void writeResponse(HttpExchange exchange,
                                String responseString,
                                int responseCode) throws IOException {
@@ -86,6 +68,7 @@ public class TasksHandler implements HttpHandler {
                 gson.toJson(taskManager.getTasks()),
                 200);
     }
+
     void handleGetTaskById(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         Optional<Integer> taskIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
@@ -102,14 +85,18 @@ public class TasksHandler implements HttpHandler {
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
         Task task = gson.fromJson(body, Task.class);
-        boolean isExists = taskManager.getTasks().stream()
-                .anyMatch(existingTask -> existingTask.getTaskId() == task.getTaskId());
-        if (!isExists) {
-            taskManager.createTask(task);
-            writeResponse(exchange, "Добавление успешно", 200);
-        } else {
+        try {
+            boolean isExists = taskManager.getTasks().stream()
+                    .anyMatch(existingTask -> existingTask.getTaskId() == task.getTaskId());
+            if (!isExists) {
+                taskManager.createTask(task);
+                writeResponse(exchange, "Добавление успешно", 200);
+            } else {
                 taskManager.updateTask(task);
                 writeResponse(exchange, "Изменение успешно", 200);
+            }
+        } catch (IllegalStateException e) {
+            writeResponse(exchange, "Ошибка: Задачи пересекаются по времени выполнения", 406);
         }
     }
 
@@ -135,6 +122,4 @@ public class TasksHandler implements HttpHandler {
             writeResponse(exchange, "Некорректный идентификатор задачи", 400);
         }
     }
-
-    enum Endpoint {GET_TASKS, GET_TASKBYID, POST_TASK, DELETE_TASK, UNKNOWN}
 }
