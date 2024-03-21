@@ -15,14 +15,16 @@ import java.util.Optional;
 
 import static main.java.hw.servers.handlers.EndpointResolver.getEndpoint;
 
+import main.java.hw.servers.HttpTaskServer;
+
 public class EpicsHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final TaskManager taskManager;
     protected final Gson gson;
 
-    public EpicsHandler(TaskManager taskManager, Gson gson) {
+    public EpicsHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
-        this.gson = gson;
+        this.gson = HttpTaskServer.getGson();
     }
 
     @Override
@@ -80,10 +82,10 @@ public class EpicsHandler implements HttpHandler {
                     .anyMatch(existingEpic -> existingEpic.getTaskId() == epic.getTaskId());
             if (!isExists) {
                 taskManager.createEpic(epic);
-                HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 200);
+                HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 201);
             } else {
                 taskManager.updateEpic(epic);
-                HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 200);
+                HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 201);
             }
         } catch (IllegalStateException e) {
             HttpResponseHandler.writeResponse(exchange, "Ошибка: Задачи пересекаются по времени выполнения", 406);

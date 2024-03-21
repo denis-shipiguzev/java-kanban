@@ -12,6 +12,7 @@ import java.util.Optional;
 import com.google.gson.*;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Task;
+import main.java.hw.servers.HttpTaskServer;
 import main.java.hw.servers.handlers.enums.Endpoint;
 
 import static main.java.hw.servers.handlers.EndpointResolver.getEndpoint;
@@ -21,9 +22,9 @@ public class TasksHandler implements HttpHandler {
     protected final TaskManager taskManager;
     protected final Gson gson;
 
-    public TasksHandler(TaskManager taskManager, Gson gson) {
+    public TasksHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
-        this.gson = gson;
+        this.gson = HttpTaskServer.getGson();
     }
 
     @Override
@@ -79,10 +80,10 @@ public class TasksHandler implements HttpHandler {
                     .anyMatch(existingTask -> existingTask.getTaskId() == task.getTaskId());
             if (!isExists) {
                 taskManager.createTask(task);
-                HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 200);
+                HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 201);
             } else {
                 taskManager.updateTask(task);
-                HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 200);
+                HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 201);
             }
         } catch (IllegalStateException e) {
             HttpResponseHandler.writeResponse(exchange, "Ошибка: Задачи пересекаются по времени выполнения", 406);

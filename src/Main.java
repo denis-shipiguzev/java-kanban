@@ -53,9 +53,9 @@ public class Main {
         Проверьте, что статус задачи и подзадачи сохранился, а статус эпика рассчитался по статусам подзадач.
         */
         System.out.println("---");
-//        task1 = new Task(task1.getTaskId(), "Task 1", "Test task 1", TaskStatus.IN_PROGRESS,
-//                LocalDateTime.of(2024, 3, 7, 17, 0, 0), Duration.ofMinutes(30));
-//        taskManager.updateTask(task1);
+        task1 = new Task(task1.getTaskId(), "Task 1", "Test task 1", TaskStatus.IN_PROGRESS,
+                LocalDateTime.of(2024, 3, 7, 17, 0, 0), Duration.ofMinutes(30));
+        taskManager.updateTask(task1);
         System.out.println(taskManager.getTaskById(1));
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
                 3, TaskStatus.IN_PROGRESS,

@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Subtask;
+import main.java.hw.servers.HttpTaskServer;
 import main.java.hw.servers.handlers.enums.Endpoint;
 
 import java.io.IOException;
@@ -20,9 +21,9 @@ public class SubTasksHandler implements HttpHandler {
     protected final TaskManager taskManager;
     protected final Gson gson;
 
-    public SubTasksHandler(TaskManager taskManager, Gson gson) {
+    public SubTasksHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
-        this.gson = gson;
+        this.gson = HttpTaskServer.getGson();
     }
 
     @Override
@@ -78,10 +79,10 @@ public class SubTasksHandler implements HttpHandler {
                     .anyMatch(existingSubtask -> existingSubtask.getTaskId() == subtask.getTaskId());
             if (!isExists) {
                 taskManager.createSubtask(subtask);
-                HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 200);
+                HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 201);
             } else {
                 taskManager.updateSubtask(subtask);
-                HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 200);
+                HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 201);
             }
         } catch (IllegalStateException e) {
             HttpResponseHandler.writeResponse(exchange, "Ошибка: Задачи пересекаются по времени выполнения", 406);

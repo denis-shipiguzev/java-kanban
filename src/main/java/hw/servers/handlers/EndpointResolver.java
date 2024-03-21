@@ -17,6 +17,14 @@ public class EndpointResolver {
             if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE_TASK;
             }
+        } else if (pathParts.length == 2 & pathParts[1].equals("history")) {
+            if (requestMethod.equals("GET")) {
+                return Endpoint.GET_HISTORY;
+            }
+        } else if (pathParts.length == 2 & pathParts[1].equals("prioritized")) {
+            if (requestMethod.equals("GET")) {
+                return Endpoint.GET_PRIORITIZED;
+            }
         } else if (pathParts.length == 3 && pathParts[1].equals("tasks")) {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET_TASKBYID;
