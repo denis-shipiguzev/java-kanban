@@ -1,5 +1,6 @@
 package main.java.hw.managers;
 
+import main.java.hw.managers.taskmanagers.InMemoryTaskManager;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.managers.historymanagers.HistoryManager;
 import main.java.hw.managers.historymanagers.InMemoryHistoryManager;

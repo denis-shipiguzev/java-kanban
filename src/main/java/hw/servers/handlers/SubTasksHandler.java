@@ -1,7 +1,11 @@
 package main.java.hw.servers.handlers;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import main.java.hw.managers.taskmanagers.TaskManager;
+import main.java.hw.model.Subtask;
+import main.java.hw.servers.handlers.enums.Endpoint;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,19 +13,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-import com.google.gson.*;
-import main.java.hw.managers.taskmanagers.TaskManager;
-import main.java.hw.model.Task;
-import main.java.hw.servers.handlers.enums.Endpoint;
-
 import static main.java.hw.servers.handlers.EndpointResolver.getEndpoint;
 
-public class TasksHandler implements HttpHandler {
+public class SubTasksHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final TaskManager taskManager;
     protected final Gson gson;
 
-    public TasksHandler(TaskManager taskManager, Gson gson) {
+    public SubTasksHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
         this.gson = gson;
     }
@@ -31,20 +30,20 @@ public class TasksHandler implements HttpHandler {
         Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod());
 
         switch (endpoint) {
-            case GET_TASKS: {
-                handleGetTasks(exchange);
+            case GET_SUBTASKS: {
+                handleGetSubtasks(exchange);
                 break;
             }
-            case GET_TASKBYID: {
-                handleGetTaskById(exchange);
+            case GET_SUBTASKBYID: {
+                handleGetSubtaskById(exchange);
                 break;
             }
-            case POST_TASK: {
-                handlePostTask(exchange);
+            case POST_SUBTASK: {
+                handlePostSubtask(exchange);
                 break;
             }
-            case DELETE_TASK: {
-                handleDeleteTask(exchange);
+            case DELETE_SUBTASK: {
+                handleDeleteSubtask(exchange);
                 break;
             }
             default:
@@ -52,36 +51,36 @@ public class TasksHandler implements HttpHandler {
         }
     }
 
-    void handleGetTasks(HttpExchange exchange) throws IOException {
+    void handleGetSubtasks(HttpExchange exchange) throws IOException {
         HttpResponseHandler.writeResponse(exchange,
-                gson.toJson(taskManager.getTasks()),
+                gson.toJson(taskManager.getSubtasks()),
                 200);
     }
 
-    void handleGetTaskById(HttpExchange exchange) throws IOException {
+    void handleGetSubtaskById(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         Optional<Integer> taskIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
         int taskId = taskIdOpt.get();
-        Task task = taskManager.getTaskById(taskId);
-        if (task != null) {
-            HttpResponseHandler.writeResponse(exchange, gson.toJson(task, Task.class), 200);
+        Subtask subtask = taskManager.getSubtaskById(taskId);
+        if (subtask != null) {
+            HttpResponseHandler.writeResponse(exchange, gson.toJson(subtask, Subtask.class), 200);
         } else {
             HttpResponseHandler.writeResponse(exchange, "Пост с идентификатором " + taskId + " не найден", 404);
         }
     }
 
-    void handlePostTask(HttpExchange exchange) throws IOException {
+    void handlePostSubtask(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
-        Task task = gson.fromJson(body, Task.class);
+        Subtask subtask = gson.fromJson(body, Subtask.class);
         try {
-            boolean isExists = taskManager.getTasks().stream()
-                    .anyMatch(existingTask -> existingTask.getTaskId() == task.getTaskId());
+            boolean isExists = taskManager.getSubtasks().stream()
+                    .anyMatch(existingSubtask -> existingSubtask.getTaskId() == subtask.getTaskId());
             if (!isExists) {
-                taskManager.createTask(task);
+                taskManager.createSubtask(subtask);
                 HttpResponseHandler.writeResponse(exchange, "Добавление успешно", 200);
             } else {
-                taskManager.updateTask(task);
+                taskManager.updateSubtask(subtask);
                 HttpResponseHandler.writeResponse(exchange, "Изменение успешно", 200);
             }
         } catch (IllegalStateException e) {
@@ -89,7 +88,7 @@ public class TasksHandler implements HttpHandler {
         }
     }
 
-    void handleDeleteTask(HttpExchange exchange) throws IOException {
+    void handleDeleteSubtask(HttpExchange exchange) throws IOException {
         String query = exchange.getRequestURI().getQuery();
         String[] queryParams = query.split("&");
         int taskId = -1;
@@ -106,7 +105,7 @@ public class TasksHandler implements HttpHandler {
         }
 
         if (taskId != -1) {
-            taskManager.deleteTaskById(taskId);
+            taskManager.deleteSubtaskById(taskId);
             HttpResponseHandler.writeResponse(exchange, "Удаление успешно", 200);
         } else {
             HttpResponseHandler.writeResponse(exchange, "Некорректный идентификатор задачи", 400);

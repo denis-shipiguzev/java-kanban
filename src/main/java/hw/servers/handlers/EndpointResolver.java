@@ -21,6 +21,37 @@ public class EndpointResolver {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET_TASKBYID;
             }
+        } else if (pathParts.length == 2 & pathParts[1].equals("subtasks")) {
+            if (requestMethod.equals("GET")) {
+                return Endpoint.GET_SUBTASKS;
+            }
+            if (requestMethod.equals("POST")) {
+                return Endpoint.POST_SUBTASK;
+            }
+            if (requestMethod.equals("DELETE")) {
+                return Endpoint.DELETE_SUBTASK;
+            }
+        } else if (pathParts.length == 3 && pathParts[1].equals("subtasks")) {
+            if (requestMethod.equals("GET")) {
+                return Endpoint.GET_SUBTASKBYID;
+            }
+        } else if (pathParts.length == 2 & pathParts[1].equals("epics")) {
+            if (requestMethod.equals("GET")) {
+                return Endpoint.GET_EPICS;
+            }
+            if (requestMethod.equals("POST")) {
+                return Endpoint.POST_EPIC;
+            }
+            if (requestMethod.equals("DELETE")) {
+                return Endpoint.DELETE_EPIC;
+            }
+        } else if (pathParts.length == 3 && pathParts[1].equals("epics")) {
+            if (requestMethod.equals("GET")) {
+                return Endpoint.GET_EPICBYID;
+            }
+        } else if (pathParts.length == 4 && pathParts[1].equals("epics") && pathParts[3].equals("subtasks"))
+            if (requestMethod.equals("GET")) {
+            return Endpoint.GET_EPICSUBTASKS;
         }
         return Endpoint.UNKNOWN;
     }

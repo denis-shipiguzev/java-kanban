@@ -31,9 +31,9 @@ public class TaskAdapter implements JsonDeserializer<Task> {
             task.setType(TaskType.SUBTASK);
             return task;
         } else if (type.getTypeName().equals(Epic.class.getTypeName())) {
-            Epic task = gson.fromJson(jsonElement, Epic.class);
-            task.setType(TaskType.EPIC);
-            return task;
+            Epic epic = gson.fromJson(jsonElement, Epic.class);
+            epic.setType(TaskType.EPIC);
+            return epic;
         } else {
             Task task = gson.fromJson(jsonElement, Task.class);
             if (jsonObject.has("status")) {
