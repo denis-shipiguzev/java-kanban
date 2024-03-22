@@ -76,7 +76,8 @@ public class EpicsHandler implements HttpHandler {
             HttpResponseHandler.writeResponse(exchange, "Пост с идентификатором " + taskId + " не найден", 404);
         }
     }
-    void handleGetEpicSubtasks(HttpExchange exchange) throws IOException{
+
+    void handleGetEpicSubtasks(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         Optional<Integer> taskIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
         int taskId = taskIdOpt.get();
