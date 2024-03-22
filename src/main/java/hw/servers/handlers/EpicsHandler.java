@@ -5,12 +5,14 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Epic;
+import main.java.hw.model.Subtask;
 import main.java.hw.servers.handlers.enums.Endpoint;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import static main.java.hw.servers.handlers.EndpointResolver.getEndpoint;
@@ -40,6 +42,10 @@ public class EpicsHandler implements HttpHandler {
                 handleGetEpicById(exchange);
                 break;
             }
+            case GET_EPICSUBTASKS: {
+                handleGetEpicSubtasks(exchange);
+                break;
+            }
             case POST_EPIC: {
                 handlePostEpic(exchange);
                 break;
@@ -66,6 +72,17 @@ public class EpicsHandler implements HttpHandler {
         Epic epic = taskManager.getEpicById(taskId);
         if (epic != null) {
             HttpResponseHandler.writeResponse(exchange, gson.toJson(epic, Epic.class), 200);
+        } else {
+            HttpResponseHandler.writeResponse(exchange, "Пост с идентификатором " + taskId + " не найден", 404);
+        }
+    }
+    void handleGetEpicSubtasks(HttpExchange exchange) throws IOException{
+        String[] pathParts = exchange.getRequestURI().getPath().split("/");
+        Optional<Integer> taskIdOpt = Optional.of(Integer.parseInt(pathParts[2]));
+        int taskId = taskIdOpt.get();
+        List<Subtask> subtaskList = taskManager.getEpicSubtasks(taskId);
+        if (!subtaskList.isEmpty()) {
+            HttpResponseHandler.writeResponse(exchange, gson.toJson(subtaskList), 200);
         } else {
             HttpResponseHandler.writeResponse(exchange, "Пост с идентификатором " + taskId + " не найден", 404);
         }
