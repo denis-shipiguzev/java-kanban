@@ -19,7 +19,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -67,11 +66,12 @@ public class TasksHandlerTest {
         }
 
         assertEquals(200, response.statusCode());
-        List<Task> tasksFromManager = manager.getTasks();
+        List<Task> tasksFromManager = gson.fromJson(response.body(), new TypeToken<List<Task>>() {
+        }.getType());
 
         assertNotNull(tasksFromManager, "Tasks not returned.");
         assertEquals(1, tasksFromManager.size(), "Incorrect number of tasks.");
-        assertEquals(task, tasksFromManager.get(0));
+        assertEquals(task, tasksFromManager.get(0), "Tasks not equals");
     }
 
     @Test

@@ -1,23 +1,31 @@
 package main.java.hw.servers.adapters;
 
-import com.google.gson.TypeAdapter;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
-    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
-    public void write(final JsonWriter jsonWriter, final LocalDateTime localDateTime) throws IOException {
-        jsonWriter.value(localDateTime.format(dtf));
+    public void write(JsonWriter out, LocalDateTime value) throws IOException {
+        if (value == null) {
+            out.nullValue();
+        } else {
+            out.value(value.toString());
+        }
     }
 
     @Override
-    public LocalDateTime read(final JsonReader jsonReader) throws IOException {
-        return LocalDateTime.parse(jsonReader.nextString(), dtf);
+    public LocalDateTime read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        } else {
+            return LocalDateTime.parse(in.nextString());
+        }
     }
 }

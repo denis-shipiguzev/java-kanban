@@ -1,4 +1,5 @@
 id,type,name,status,description,epic,startTime,duration,endTime
-1,TASK,Task 1,IN_PROGRESS,Test task 1,,2024-03-22T12:00,PT30M,2024-03-22T12:30
+2,SUBTASK,Subtask 1,NEW,Test subtask 1,1,2024-03-22T12:00,PT30M,2024-03-22T12:30
+1,EPIC,Epic 1,IN_PROGRESS,Test epic 1,,2024-03-23T12:00,PT30M,2024-03-23T12:30
+3,SUBTASK,Subtask 1,IN_PROGRESS,Test subtask 1,1,2024-03-23T12:00,PT30M,2024-03-23T12:30
 
-1
