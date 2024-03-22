@@ -53,11 +53,11 @@ public class PrioritizedHandlerTest {
 
     @Test
     public void shouldReturnPrioritizedTasks() throws IOException, InterruptedException {
-        Task task1 = new Task("task1", "taskDescription1",
+        Task task1 = new Task("Task 1", "Test task 1",
                 LocalDateTime.of(2024, 3, 22, 12, 0), Duration.ofMinutes(30));
-        Task task2 = new Task("task1", "taskDescription1",
+        Task task2 = new Task("Task 2", "Test task 2",
                 LocalDateTime.of(2024, 3, 22, 10, 0), Duration.ofMinutes(30));
-        Task task3 = new Task("task1", "taskDescription1",
+        Task task3 = new Task("Task 3", "Test task 3",
                 LocalDateTime.of(2024, 3, 22, 14, 0), Duration.ofMinutes(25));
         manager.createTask(task1);
         manager.createTask(task2);

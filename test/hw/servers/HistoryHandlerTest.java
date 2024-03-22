@@ -52,7 +52,7 @@ public class HistoryHandlerTest {
 
     @Test
     public void shouldReturnHistory() throws IOException, InterruptedException {
-        Task task = new Task("task", "taskDescription",
+        Task task = new Task("Task 1", "Test task 1",
                 LocalDateTime.of(2024, 3, 22, 0, 0), Duration.ofMinutes(30));
         manager.createTask(task);
         manager.getTaskById(1);

@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import main.java.hw.managers.Managers;
 import main.java.hw.managers.taskmanagers.TaskManager;
 import main.java.hw.model.Task;
+import main.java.hw.model.enums.TaskStatus;
 import main.java.hw.servers.HttpTaskServer;
 import main.java.hw.servers.adapters.DurationTypeAdapter;
 import main.java.hw.servers.adapters.LocalDateTimeAdapter;
@@ -18,11 +19,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TasksHandlerTest {
     private final TaskManager manager = Managers.getDefault();
@@ -51,11 +54,10 @@ public class TasksHandlerTest {
     }
 
     @Test
-    public void shouldReturnTasks() throws IOException, InterruptedException {
-        Task task = new Task("task", "taskDescription",
-                LocalDateTime.of(2024, 3, 5, 0, 0), Duration.ofMinutes(5));
+    public void shouldReturnTasksAfterGetMethod() throws IOException, InterruptedException {
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 22, 12, 0), Duration.ofMinutes(30));
         manager.createTask(task);
-        int taskId = task.getTaskId();
         HttpResponse<String> response;
         try (HttpClient client = HttpClient.newHttpClient()) {
             URI url = URI.create("http://localhost:8080/tasks");
@@ -65,14 +67,100 @@ public class TasksHandlerTest {
         }
 
         assertEquals(200, response.statusCode());
+        List<Task> tasksFromManager = manager.getTasks();
 
-        List<Task> tasksFromManager = gson.fromJson(response.body(), new TypeToken<List<Task>>() {}.getType());
+        assertNotNull(tasksFromManager, "Tasks not returned.");
+        assertEquals(1, tasksFromManager.size(), "Incorrect number of tasks.");
+        assertEquals(task, tasksFromManager.get(0));
+    }
 
-        Task taskFromManager = tasksFromManager.get(0);
-        assertEquals(taskId, taskFromManager.getTaskId(), "incorrect task id");
-        assertEquals(task.getName(), taskFromManager.getName(), "incorrect task name");
-        assertEquals(task.getDescription(), taskFromManager.getDescription(), "incorrect task description");
-        assertEquals(task.getDuration().toString(), taskFromManager.getDuration().toString(), "incorrect task duration");
-        assertEquals(task.getStartTime().toString(), taskFromManager.getStartTime().toString(), "incorrect task start time");
+    @Test
+    public void shouldReturnTaskIdAfterGetMethod() throws IOException, InterruptedException {
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 22, 12, 0), Duration.ofMinutes(30));
+        manager.createTask(task);
+        int taskId = task.getTaskId();
+        HttpResponse<String> response;
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            URI url = URI.create("http://localhost:8080/tasks/" + taskId);
+            HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
+
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }
+
+        assertEquals(200, response.statusCode());
+        Task taskFromManager = gson.fromJson(response.body(), new TypeToken<Task>() {
+        }.getType());
+
+        assertNotNull(taskFromManager, "Task not returned.");
+        assertEquals(task, taskFromManager, "Tasks not equals");
+    }
+
+    @Test
+    public void shouldCreateTaskAfterPostMethod() throws IOException, InterruptedException {
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 22, 12, 0), Duration.ofMinutes(30));
+        String taskJson = gson.toJson(task);
+        HttpResponse<String> response;
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            URI url = URI.create("http://localhost:8080/tasks");
+            HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(taskJson)).build();
+
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }
+
+        assertEquals(201, response.statusCode());
+
+        List<Task> tasksFromManager = manager.getTasks();
+
+        assertNotNull(tasksFromManager, "Tasks not returned.");
+        assertEquals(1, tasksFromManager.size(), "Incorrect number of tasks.");
+        assertEquals(task.getName(), tasksFromManager.get(0).getName(), "Tasks not equals.");
+        assertEquals(task.getType(), tasksFromManager.get(0).getType(), "Tasks not equals.");
+        assertEquals(task.getDescription(), tasksFromManager.get(0).getDescription(), "Tasks not equals.");
+        assertEquals(task.getStatus(), tasksFromManager.get(0).getStatus(), "Tasks not equals.");
+    }
+
+
+    @Test
+    public void shouldUpdateTaskAfterPostMethod() throws IOException, InterruptedException {
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 22, 12, 0), Duration.ofMinutes(30));
+        manager.createTask(task);
+        task = new Task(task.getTaskId(), "Task 1", "Test task 1", TaskStatus.IN_PROGRESS,
+                LocalDateTime.of(2024, 3, 22, 12, 0, 0), Duration.ofMinutes(30));
+        String taskJson = gson.toJson(task);
+        HttpResponse<String> response;
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            URI url = URI.create("http://localhost:8080/tasks");
+            HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(taskJson)).build();
+
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }
+        assertEquals(201, response.statusCode());
+        Task taskFromManager = manager.getTaskById(task.getTaskId());
+
+        assertNotNull(taskFromManager, "Task not returned.");
+        assertEquals(task.getName(), taskFromManager.getName(), "Tasks not equals.");
+        assertEquals(task.getType(), taskFromManager.getType(), "Tasks not equals.");
+        assertEquals(task.getDescription(), taskFromManager.getDescription(), "Tasks not equals.");
+        assertEquals(TaskStatus.IN_PROGRESS, taskFromManager.getStatus(), "Tasks not equals.");
+    }
+
+    @Test
+    public void shouldDeleteTaskAfterDeleteMethod() throws IOException, InterruptedException {
+        Task task = new Task("Task 1", "Test task 1",
+                LocalDateTime.of(2024, 3, 22, 12, 0), Duration.ofMinutes(30));
+        manager.createTask(task);
+        HttpResponse<String> response;
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            URI url = URI.create("http://localhost:8080/tasks?id=" + task.getTaskId());
+            HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
+
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }
+
+        assertEquals(200, response.statusCode());
+        assertEquals(0, manager.getTasks().size(), "incorrect tasks size after delete");
     }
 }
