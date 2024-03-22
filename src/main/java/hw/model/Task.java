@@ -12,13 +12,14 @@ public class Task {
     protected String name;
     protected String description;
     protected TaskStatus status;
-    private TaskType type = TaskType.TASK;
+    protected TaskType type;
     protected Duration duration;
     protected LocalDateTime startTime;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
+        this.type = TaskType.TASK;
         this.status = TaskStatus.NEW;
     }
 
@@ -26,12 +27,14 @@ public class Task {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
+        this.type = TaskType.TASK;
         this.status = TaskStatus.NEW;
     }
 
     public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
+        this.type = TaskType.TASK;
         this.status = TaskStatus.NEW;
         this.startTime = startTime;
         this.duration = duration;
@@ -41,6 +44,7 @@ public class Task {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
+        this.type = TaskType.TASK;
         this.status = TaskStatus.NEW;
         this.startTime = startTime;
         this.duration = duration;
@@ -50,6 +54,7 @@ public class Task {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
+        this.type = TaskType.TASK;
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
@@ -118,13 +123,13 @@ public class Task {
     @Override
     public String toString() {
         return "{" +
-                "\"ID\":" + taskId + "," +
-                "\"Type\":\"" + type + "\"," +
-                "\"Name\":\"" + name + "\"," +
-                "\"Description\":\"" + description + "\"," +
-                "\"Status\":\"" + status + "\"," +
-                "\"StartTime\":\"" + startTime + "\"," +
-                "\"Duration\":\"" + duration + "\"" +
+                "\"id\":" + getTaskId() + "," +
+                "\"type\":\"" + getType() + "\"," +
+                "\"name\":\"" + getName() + "\"," +
+                "\"description\":\"" + getDescription() + "\"," +
+                "\"status\":\"" + getStatus() + "\"," +
+                "\"startTime\":\"" + getStartTime() + "\"," +
+                "\"duration\":\"" + getDuration() + "\"" +
                 "}";
     }
 

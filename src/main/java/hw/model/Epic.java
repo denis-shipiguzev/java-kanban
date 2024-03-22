@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Epic extends Task {
     private List<Integer> childId = new ArrayList<>();
-    private final TaskType type = TaskType.EPIC;
     private LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description);
         this.status = TaskStatus.NEW;
+        this.type = TaskType.EPIC;
     }
 
     public Epic(int taskId, String name, String description) {
@@ -24,6 +24,7 @@ public class Epic extends Task {
     public Epic(int taskId, String name, String description, List<Integer> childId) {
         super(taskId, name, description);
         this.childId = childId;
+        this.type = TaskType.EPIC;
     }
 
     public Epic(int taskId, String name, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
@@ -31,6 +32,7 @@ public class Epic extends Task {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
+        this.type = TaskType.EPIC;
     }
 
     public List<Integer> getSubTaskIds() {

@@ -16,41 +16,57 @@ import java.time.LocalDateTime;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
-    protected static TaskManager taskManager = Managers.getDefault();
+    private final TaskManager taskManager;
     private static Gson gson;
+    private final HttpServer server;
 
-    public HttpTaskServer() {
+    public HttpTaskServer(TaskManager taskManager) throws IOException {
+        this.taskManager = taskManager;
+        this.gson = createGson();
+        this.server = createHttpServer();
+        createContexts();
     }
 
-    public static void main(String[] args) {
-        try {
-            start();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void start() throws IOException {
-        gson = new GsonBuilder()
+    private Gson createGson() {
+        return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
                 .create();
-        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+    }
+
+    private HttpServer createHttpServer() throws IOException {
+        return HttpServer.create(new InetSocketAddress(PORT), 0);
+    }
+
+    private void createContexts() {
         server.createContext("/tasks", new TasksHandler(taskManager));
         server.createContext("/subtasks", new SubTasksHandler(taskManager));
         server.createContext("/epics", new EpicsHandler(taskManager));
         server.createContext("/history", new HistoryHandler(taskManager));
         server.createContext("/prioritized", new PrioritizedHandler(taskManager));
+    }
+
+    public void start() {
         server.start();
         System.out.println("HTTP-server started port: " + PORT);
     }
 
-    private static void stop(HttpServer server) {
+    public void stop() {
         server.stop(0);
         System.out.println("HTTP-server stopped port: " + PORT);
     }
 
     public static Gson getGson() {
         return gson;
+    }
+
+    public static void main(String[] args) {
+        try {
+            TaskManager taskManager = Managers.getDefault();
+            HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
+            httpTaskServer.start();
+        } catch (IOException e) {
+            System.err.println("Failed to start HTTP server: " + e.getMessage());
+        }
     }
 }

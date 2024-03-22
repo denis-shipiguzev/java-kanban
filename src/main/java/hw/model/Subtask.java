@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 
 public class Subtask extends Task {
     private final int parentTaskId;
-    private final TaskType type = TaskType.SUBTASK;
 
     public Subtask(String name, String description, int parentTaskId, LocalDateTime startTime, Duration duration) {
         super(name, description, startTime, duration);
         this.status = TaskStatus.NEW;
+        this.type = TaskType.SUBTASK;
         this.parentTaskId = parentTaskId;
     }
 
@@ -20,6 +20,7 @@ public class Subtask extends Task {
         super(name, description, startTime, duration);
         this.taskId = taskId;
         this.status = TaskStatus.NEW;
+        this.type = TaskType.SUBTASK;
         this.parentTaskId = parentTaskId;
     }
 
@@ -27,6 +28,7 @@ public class Subtask extends Task {
         super(name, description, startTime, duration);
         this.taskId = taskId;
         this.status = status;
+        this.type = TaskType.SUBTASK;
         this.parentTaskId = parentTaskId;
     }
 

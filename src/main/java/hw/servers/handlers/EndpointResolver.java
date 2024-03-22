@@ -59,8 +59,8 @@ public class EndpointResolver {
             }
         } else if (pathParts.length == 4 && pathParts[1].equals("epics") && pathParts[3].equals("subtasks"))
             if (requestMethod.equals("GET")) {
-            return Endpoint.GET_EPICSUBTASKS;
-        }
+                return Endpoint.GET_EPICSUBTASKS;
+            }
         return Endpoint.UNKNOWN;
     }
 }
