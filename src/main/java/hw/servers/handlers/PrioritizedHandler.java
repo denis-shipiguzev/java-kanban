@@ -12,9 +12,8 @@ import java.io.IOException;
 import static main.java.hw.servers.handlers.EndpointResolver.getEndpoint;
 
 public class PrioritizedHandler implements HttpHandler {
-
-    protected final TaskManager taskManager;
-    protected final Gson gson;
+    private final TaskManager taskManager;
+    private final Gson gson;
 
     public PrioritizedHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
@@ -24,17 +23,14 @@ public class PrioritizedHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod());
-        switch (endpoint) {
-            case GET_PRIORITIZED: {
-                handleGetPrioritizedTasks(exchange);
-                break;
-            }
-            default:
-                HttpResponseHandler.writeResponse(exchange, "Такого эндпоинта не существует", 404);
+        if (endpoint == Endpoint.GET_PRIORITIZED) {
+            handleGetPrioritizedTasks(exchange);
+        } else {
+            HttpResponseHandler.writeResponse(exchange, "Такого эндпоинта не существует", 404);
         }
     }
 
-    void handleGetPrioritizedTasks(HttpExchange exchange) throws IOException {
+    private void handleGetPrioritizedTasks(HttpExchange exchange) throws IOException {
         HttpResponseHandler.writeResponse(exchange,
                 gson.toJson(taskManager.getPrioritizedTasks()),
                 200);
