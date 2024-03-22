@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class HttpResponseHandler {
+public class HttpHandlerUtil {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     public static void writeResponse(HttpExchange exchange,
@@ -19,5 +19,20 @@ public class HttpResponseHandler {
             os.write(responseString.getBytes(DEFAULT_CHARSET));
         }
         exchange.close();
+    }
+
+    public static int extractTaskIdFromQuery(String query) {
+        String[] queryParams = query.split("&");
+        for (String param : queryParams) {
+            String[] keyValue = param.split("=");
+            if (keyValue.length == 2 && keyValue[0].equals("id")) {
+                try {
+                    return Integer.parseInt(keyValue[1]);
+                } catch (NumberFormatException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return -1;
     }
 }

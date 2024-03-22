@@ -112,7 +112,6 @@ public class EpicsHandlerTest {
         assertEquals(200, response.statusCode());
         List<Subtask> subtasksListFromManager = gson.fromJson(response.body(), new TypeToken<List<Subtask>>() {
         }.getType());
-        System.out.println(subtasksListFromManager);
         assertEquals(manager.getEpicSubtasks(epic.getTaskId()), subtasksListFromManager, "Epic Subtasks not equals.");
     }
 }

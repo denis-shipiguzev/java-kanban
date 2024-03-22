@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import main.java.hw.managers.taskmanagers.TaskManager;
-import main.java.hw.servers.HttpTaskServer;
 import main.java.hw.servers.handlers.enums.Endpoint;
 
 import java.io.IOException;
@@ -15,9 +14,9 @@ public class HistoryHandler implements HttpHandler {
     private final TaskManager taskManager;
     private final Gson gson;
 
-    public HistoryHandler(TaskManager taskManager) {
+    public HistoryHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
-        this.gson = HttpTaskServer.getGson();
+        this.gson = gson;
     }
 
     @Override
@@ -26,12 +25,12 @@ public class HistoryHandler implements HttpHandler {
         if (endpoint == Endpoint.GET_HISTORY) {
             handleGetHistory(exchange);
         } else {
-            HttpResponseHandler.writeResponse(exchange, "Такого эндпоинта не существует", 404);
+            HttpHandlerUtil.writeResponse(exchange, "Такого эндпоинта не существует", 404);
         }
     }
 
     private void handleGetHistory(HttpExchange exchange) throws IOException {
-        HttpResponseHandler.writeResponse(exchange,
+        HttpHandlerUtil.writeResponse(exchange,
                 gson.toJson(taskManager.getHistory()),
                 200);
     }

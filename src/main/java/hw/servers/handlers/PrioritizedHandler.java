@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import main.java.hw.managers.taskmanagers.TaskManager;
-import main.java.hw.servers.HttpTaskServer;
 import main.java.hw.servers.handlers.enums.Endpoint;
 
 import java.io.IOException;
@@ -15,9 +14,9 @@ public class PrioritizedHandler implements HttpHandler {
     private final TaskManager taskManager;
     private final Gson gson;
 
-    public PrioritizedHandler(TaskManager taskManager) {
+    public PrioritizedHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
-        this.gson = HttpTaskServer.getGson();
+        this.gson = gson;
     }
 
     @Override
@@ -26,12 +25,12 @@ public class PrioritizedHandler implements HttpHandler {
         if (endpoint == Endpoint.GET_PRIORITIZED) {
             handleGetPrioritizedTasks(exchange);
         } else {
-            HttpResponseHandler.writeResponse(exchange, "Такого эндпоинта не существует", 404);
+            HttpHandlerUtil.writeResponse(exchange, "Такого эндпоинта не существует", 404);
         }
     }
 
     private void handleGetPrioritizedTasks(HttpExchange exchange) throws IOException {
-        HttpResponseHandler.writeResponse(exchange,
+        HttpHandlerUtil.writeResponse(exchange,
                 gson.toJson(taskManager.getPrioritizedTasks()),
                 200);
     }
