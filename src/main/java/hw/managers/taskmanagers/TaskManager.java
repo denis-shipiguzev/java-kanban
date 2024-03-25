@@ -10,46 +10,46 @@ import java.util.Set;
 public interface TaskManager {
     // 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
     // 2.a Получение списка всех задач.
-    List<Task> getAllTasks();
+    List<Task> getTasks();
 
-    List<Epic> getAllEpics();
+    List<Epic> getEpics();
 
-    List<Subtask> getAllSubTasks();
+    List<Subtask> getSubtasks();
 
     // 2.b  Удаление всех задач.
-    void removeAllTasks();
+    void deleteTasks();
 
-    void removeAllEpics();
+    void deleteEpics();
 
-    void removeAllSubTasks();
+    void deleteSubtasks();
 
     // 2.c  Получение по идентификатору.
-    Task getTaskByTaskId(int taskId);
+    Task getTaskById(int taskId);
 
-    Epic getEpicByTaskId(int taskId);
+    Epic getEpicById(int taskId);
 
-    Subtask getSubTaskByTaskId(int taskId);
+    Subtask getSubtaskById(int taskId);
 
     // 2.d  Создание. Сам объект должен передаваться в качестве параметра.
-    int addTask(Task task);
+    int createTask(Task task);
 
-    int addEpic(Epic epic);
+    int createEpic(Epic epic);
 
-    int addSubTask(Subtask subtask);
+    int createSubtask(Subtask subtask);
 
     // 2.e Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     int updateTask(Task task);
 
     int updateEpic(Epic epic);
 
-    int updateSubTask(Subtask subtask);
+    int updateSubtask(Subtask subtask);
 
     // 2.f Удаление по идентификатору.
-    void removeTaskById(int taskId);
+    void deleteTaskById(int taskId);
 
-    void removeSubTaskById(int taskId);
+    void deleteSubtaskById(int taskId);
 
-    void removeEpicById(int taskId);
+    void deleteEpicById(int taskId);
 
     // 3.a  Получение списка всех подзадач определённого эпика.
     List<Subtask> getEpicSubtasks(int taskId);

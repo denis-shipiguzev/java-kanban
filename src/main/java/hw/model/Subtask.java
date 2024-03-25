@@ -38,12 +38,15 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "ID=" + taskId +
-                ", Type='" + type + '\'' +
-                ", Name='" + name + '\'' +
-                ", Description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", EpicId=" + parentTaskId + '}';
+        return "{" +
+                "\"ID\":" + taskId + "," +
+                "\"Type\":\"" + type + "\"," +
+                "\"Name\":\"" + name + "\"," +
+                "\"Description\":\"" + description + "\"," +
+                "\"Status\":\"" + status + "\"," +
+                "\"EpicId\":\"" + parentTaskId + "\"," +
+                "\"StartTime\":\"" + startTime + "\"," +
+                "\"Duration\":\"" + duration + "\"" +
+                "}";
     }
 }

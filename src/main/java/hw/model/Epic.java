@@ -9,39 +9,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
-    private final List<Integer> childId;
+    private List<Integer> childId = new ArrayList<>();
     private LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description);
         this.status = TaskStatus.NEW;
         this.type = TaskType.EPIC;
-        this.childId = new ArrayList<>();
-        this.endTime = null;
     }
 
     public Epic(int taskId, String name, String description) {
         super(taskId, name, description);
-        this.type = TaskType.EPIC;
-        this.childId = new ArrayList<>();
-        this.endTime = null;
     }
 
     public Epic(int taskId, String name, String description, List<Integer> childId) {
         super(taskId, name, description);
-        this.type = TaskType.EPIC;
         this.childId = childId;
-        this.endTime = null;
+        this.type = TaskType.EPIC;
     }
 
     public Epic(int taskId, String name, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
         super(taskId, name, description);
-        this.type = TaskType.EPIC;
-        this.childId = new ArrayList<>();
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
-        this.endTime = null;
+        this.type = TaskType.EPIC;
     }
 
     public List<Integer> getSubTaskIds() {
@@ -60,17 +52,23 @@ public class Epic extends Task {
         this.endTime = endTime;
     }
 
-    @Override
     public String toString() {
-        String result = "Task{" +
-                "ID=" + taskId +
-                ", Type='" + type + '\'' +
-                ", Name='" + name + '\'' +
-                ", Description='" + description + '\'' +
-                ", status='" + status + '\'' + '}';
-        if (!childId.isEmpty()) {
-            result = result + ", subtasks=" + childId;
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"ID\":").append(taskId).append(",");
+        sb.append("\"Type\":\"").append(type).append("\",");
+        sb.append("\"Name\":\"").append(name).append("\",");
+        sb.append("\"Description\":\"").append(description).append("\",");
+        sb.append("\"Status\":\"").append(status).append("\",");
+        sb.append("\"StartTime\":\"").append(startTime).append("\",");
+        sb.append("\"Duration\":\"").append(duration).append("\"");
+        if (endTime != null) {
+            sb.append(",\"EndTime\":\"").append(endTime).append("\"");
         }
-        return result;
+        if (childId != null && !childId.isEmpty()) {
+            sb.append(",\"SubTaskIds\":").append(childId);
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }

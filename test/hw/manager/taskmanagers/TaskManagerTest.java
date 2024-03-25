@@ -25,14 +25,14 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void addNewTask() {
         Task task = new Task("Test addNewTask", "Test addNewTask description", LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        final int taskId = taskManager.addTask(task);
+        final int taskId = taskManager.createTask(task);
 
-        final Task savedTask = taskManager.getTaskByTaskId(taskId);
+        final Task savedTask = taskManager.getTaskById(taskId);
 
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
 
-        final List<Task> tasks = taskManager.getAllTasks();
+        final List<Task> tasks = taskManager.getTasks();
 
         assertNotNull(tasks, "Задачи не возвращаются.");
         assertEquals(1, tasks.size(), "Неверное количество задач.");
@@ -46,8 +46,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldTaskSameTask() {
         Task task = new Task("Task", "Test task 1",
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        final int taskId = taskManager.addTask(task);
-        final Task savedTask = taskManager.getTaskByTaskId(taskId);
+        final int taskId = taskManager.createTask(task);
+        final Task savedTask = taskManager.getTaskById(taskId);
         assertEquals(task, savedTask, "Tasks are not equal.");
     }
 
@@ -57,19 +57,19 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldEpicSameEpic() {
         Epic epic = new Epic("Epic", "Test epic 1");
-        final int epicId = taskManager.addEpic(epic);
-        final Epic savedEpic = taskManager.getEpicByTaskId(epicId);
+        final int epicId = taskManager.createEpic(epic);
+        final Epic savedEpic = taskManager.getEpicById(epicId);
         assertEquals(epic, savedEpic, "Epics are not equal.");
     }
 
     @Test
     void shouldSubtaskSameSubtask() {
         Epic epic = new Epic("Epic", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask = new Subtask("Subtask", "Test subtask 1", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        final int subtaskId = taskManager.addSubTask(subtask);
-        final Subtask savedSubtask = taskManager.getSubTaskByTaskId(subtaskId);
+        final int subtaskId = taskManager.createSubtask(subtask);
+        final Subtask savedSubtask = taskManager.getSubtaskById(subtaskId);
         assertEquals(subtask, savedSubtask, "Subtasks are not equal.");
     }
 
@@ -80,8 +80,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldEpicNotSameSubtask() {
         ArrayList<Integer> childId = new ArrayList<>(List.of(1));
         Epic epic = new Epic(1, "Epic 1", "Test epic 1", childId);
-        taskManager.addEpic(epic);
-        assertNotEquals(epic, taskManager.getEpicByTaskId(1), "Epic created.");
+        taskManager.createEpic(epic);
+        assertNotEquals(epic, taskManager.getEpicById(1), "Epic created.");
     }
 
     /*
@@ -91,8 +91,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldSubtaskNotSameEpic() {
         Subtask subtask = new Subtask(1, "Subtask 1", "Test subtask 1", 1,
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask);
-        assertNotEquals(subtask, taskManager.getSubTaskByTaskId(1), "Subtask created.");
+        taskManager.createSubtask(subtask);
+        assertNotEquals(subtask, taskManager.getSubtaskById(1), "Subtask created.");
     }
 
     /*
@@ -101,12 +101,12 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldAddTaskAndFind() {
         Task task = new Task("Task 1", "Test task 1", LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        final int taskId = taskManager.addTask(task);
+        final int taskId = taskManager.createTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        final int epicId = taskManager.addEpic(epic);
+        final int epicId = taskManager.createEpic(epic);
         Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        final int subtaskId = taskManager.addSubTask(subtask);
+        final int subtaskId = taskManager.createSubtask(subtask);
         assertEquals(taskId, task.getTaskId(), "Invalid identifier.");
         assertEquals(epicId, epic.getTaskId(), "Invalid identifier.");
         assertEquals(subtaskId, subtask.getTaskId(), "Invalid identifier.");
@@ -115,10 +115,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldRemoveSubtaskFromEpicWhenDeleted() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask);
-        taskManager.removeSubTaskById(subtask.getTaskId());
+        taskManager.createSubtask(subtask);
+        taskManager.deleteSubtaskById(subtask.getTaskId());
         final List<Subtask> subtasks = taskManager.getEpicSubtasks(epic.getTaskId());
         assertTrue(subtasks.isEmpty(),"subtasks of epic is not empty.");
     }
@@ -126,9 +126,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldSetDescription() {
         Task task = new Task("Test addNewTask", "Test addNewTask description", LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        final int taskId = taskManager.addTask(task);
+        final int taskId = taskManager.createTask(task);
         task.setDescription("Test edit NewTask description");
-        final Task savedTask = taskManager.getTaskByTaskId(taskId);
+        final Task savedTask = taskManager.getTaskById(taskId);
         assertEquals(task, savedTask, "Cannot set task description.");
     }
 
@@ -138,11 +138,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldReturnStatusNEWforEpicNEWsubtasks() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask1);
+        taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask2);
+        taskManager.createSubtask(subtask2);
         assertEquals(epic.getStatus(), TaskStatus.NEW, "Epic status not NEW");
     }
 
@@ -152,21 +152,21 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldReturnStatusDONEforEpicDONEsubtasks() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask1);
+        taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask2);
+        taskManager.createSubtask(subtask2);
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
                 1, TaskStatus.DONE,
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.updateSubTask(subtask1);
+        taskManager.updateSubtask(subtask1);
         subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2",
                 1, TaskStatus.DONE,
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.updateSubTask(subtask2);
+        taskManager.updateSubtask(subtask2);
         assertEquals(epic.getStatus(), TaskStatus.DONE, "Epic status not DONE");
     }
 
@@ -176,21 +176,21 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldReturnStatusIN_PROGRESSforEpicsNEWDONESubtasks() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask1);
+        taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask2);
+        taskManager.createSubtask(subtask2);
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
                 1, TaskStatus.NEW,
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.updateSubTask(subtask1);
+        taskManager.updateSubtask(subtask1);
         subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2",
                 1, TaskStatus.DONE,
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.updateSubTask(subtask2);
+        taskManager.updateSubtask(subtask2);
         assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Epic status not IN_PROGRESS");
     }
 
@@ -200,31 +200,31 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldReturnStatusIN_PROGRESSforEpicsIN_PROGRESSSubtasks() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask1);
+        taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask2);
+        taskManager.createSubtask(subtask2);
         subtask1 = new Subtask(subtask1.getTaskId(), "Subtask 1", "Test subtask 1",
                 1, TaskStatus.IN_PROGRESS,
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.updateSubTask(subtask1);
+        taskManager.updateSubtask(subtask1);
         subtask2 = new Subtask(subtask2.getTaskId(), "Subtask 2", "Test subtask 2",
                 1, TaskStatus.IN_PROGRESS,
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.updateSubTask(subtask2);
+        taskManager.updateSubtask(subtask2);
         assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Epic status not IN_PROGRESS");
     }
 
     @Test
     public void shouldReturnThrowAfterIntersectionTasks() {
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask1);
+        taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask 2", "Test subtask 2", epic.getTaskId(), LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        assertThrows(IllegalStateException.class, () -> taskManager.addSubTask(subtask2));
+        assertThrows(IllegalStateException.class, () -> taskManager.createSubtask(subtask2));
     }
 }

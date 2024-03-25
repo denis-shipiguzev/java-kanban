@@ -30,22 +30,22 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     public void shouldReturnTasksAndHistoryAfterCreating() {
         Task task = new Task("Task 1", "Test task 1",
                 LocalDateTime.of(2024, 3, 5, 15, 0, 0), Duration.ofMinutes(30));
-        taskManager.addTask(task);
+        taskManager.createTask(task);
         Epic epic = new Epic("Epic 1", "Test epic 1");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
         Subtask subtask = new Subtask("Subtask 1", "Test subtask 1", epic.getTaskId(),
                 LocalDateTime.of(2024, 3, 5, 16, 0, 0), Duration.ofMinutes(30));
-        taskManager.addSubTask(subtask);
-        taskManager.getTaskByTaskId(1);
+        taskManager.createSubtask(subtask);
+        taskManager.getTaskById(1);
         TaskManager testFileBackedTaskManager;
         try {
             testFileBackedTaskManager = FileBackedTaskManager.loadFromFile(tmpFile);
         } catch (IOException exception) {
             throw new ManagerSaveException("Error reading from file.", exception);
         }
-        assertEquals(1, testFileBackedTaskManager.getAllTasks().size());
-        assertEquals(1, testFileBackedTaskManager.getAllSubTasks().size());
-        assertEquals(1, testFileBackedTaskManager.getAllEpics().size());
+        assertEquals(1, testFileBackedTaskManager.getTasks().size());
+        assertEquals(1, testFileBackedTaskManager.getSubtasks().size());
+        assertEquals(1, testFileBackedTaskManager.getEpics().size());
         assertEquals(1, testFileBackedTaskManager.getHistory().size());
     }
 
@@ -58,9 +58,9 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         } catch (IOException exception) {
             throw new ManagerSaveException("Error reading from file.", exception);
         }
-        assertEquals(1, testLoadFileBackedTaskManager.getAllTasks().size());
-        assertEquals(1, testLoadFileBackedTaskManager.getAllEpics().size());
-        assertEquals(1, testLoadFileBackedTaskManager.getAllSubTasks().size());
+        assertEquals(1, testLoadFileBackedTaskManager.getTasks().size());
+        assertEquals(1, testLoadFileBackedTaskManager.getEpics().size());
+        assertEquals(1, testLoadFileBackedTaskManager.getSubtasks().size());
         assertEquals(2, testLoadFileBackedTaskManager.getHistory().size());
     }
 
@@ -80,9 +80,9 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         } catch (IOException exception) {
             throw new ManagerSaveException("Error reading from file.", exception);
         }
-        assertEquals(0, testLoadFileBackedTaskManager.getAllTasks().size());
-        assertEquals(0, testLoadFileBackedTaskManager.getAllEpics().size());
-        assertEquals(0, testLoadFileBackedTaskManager.getAllSubTasks().size());
+        assertEquals(0, testLoadFileBackedTaskManager.getTasks().size());
+        assertEquals(0, testLoadFileBackedTaskManager.getEpics().size());
+        assertEquals(0, testLoadFileBackedTaskManager.getSubtasks().size());
         assertEquals(0, testLoadFileBackedTaskManager.getHistory().size());
     }
 }

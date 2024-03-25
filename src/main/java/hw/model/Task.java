@@ -19,23 +19,23 @@ public class Task {
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = TaskStatus.NEW;
         this.type = TaskType.TASK;
+        this.status = TaskStatus.NEW;
     }
 
     public Task(int taskId, String name, String description) {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
-        this.status = TaskStatus.NEW;
         this.type = TaskType.TASK;
+        this.status = TaskStatus.NEW;
     }
 
     public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
-        this.status = TaskStatus.NEW;
         this.type = TaskType.TASK;
+        this.status = TaskStatus.NEW;
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -44,8 +44,8 @@ public class Task {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
-        this.status = TaskStatus.NEW;
         this.type = TaskType.TASK;
+        this.status = TaskStatus.NEW;
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -54,8 +54,8 @@ public class Task {
         this.taskId = taskId;
         this.name = name;
         this.description = description;
-        this.status = status;
         this.type = TaskType.TASK;
+        this.status = status;
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -88,6 +88,10 @@ public class Task {
         return type;
     }
 
+    public void setType(TaskType type) {
+        this.type = type;
+    }
+
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
@@ -118,13 +122,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "ID=" + taskId +
-                ", Type='" + type + '\'' +
-                ", Name='" + name + '\'' +
-                ", Description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return "{" +
+                "\"id\":" + getTaskId() + "," +
+                "\"type\":\"" + getType() + "\"," +
+                "\"name\":\"" + getName() + "\"," +
+                "\"description\":\"" + getDescription() + "\"," +
+                "\"status\":\"" + getStatus() + "\"," +
+                "\"startTime\":\"" + getStartTime() + "\"," +
+                "\"duration\":\"" + getDuration() + "\"" +
+                "}";
     }
 
     @Override
